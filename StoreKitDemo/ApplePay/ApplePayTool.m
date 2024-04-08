@@ -133,8 +133,7 @@
 }
 
 - (void)returnResultWithStatus:(StoreState)status {
-    //    LOG_D(@"Apple购买商品状态:%@, %ld",[self getPayId], status);
-    NSLog(@"Apple购买商品状态:%ld, key: %@", status, [self getPayId]);
+//    NSLog(@"Apple购买商品状态:%ld, orderID: %@", status, [self getPayId]);
     if (status == 1) {
         [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDictTemp];
     }
