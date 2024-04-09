@@ -45,8 +45,8 @@ import StoreKit
     func storeKitLaunch() {
         let store = Store.shared
         store.stateBlock = { [weak self](state: StoreState, transaction : Transaction?) in
-            self?.payClosure?(state, nil, nil)
-            guard let transactionT = transaction else { return }
+            guard let transactionT = transaction else { return
+                (self?.payClosure?(state, nil, nil))!}
             self?.payClosure?(state, String(transactionT.id), String(transactionT.originalID))
         }
     }
