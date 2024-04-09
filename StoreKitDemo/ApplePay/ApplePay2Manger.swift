@@ -8,6 +8,7 @@
 import UIKit
 import StoreKit
 
+@available(iOS 15.0, *)
 @objcMembers class ApplePay2Manger: NSObject {
     // 系统会验证是否是一个合法的 Transaction，此时系统不再提供 base64 的 receip string 信息，只需要上传 transaction.id 和 transaction.originalID，服务器端根据需要选择合适的 ID 进行验证。
     public var payClosure:((_ status: StoreState, _ transactionId: String?, _ originalID: String?) -> ())?

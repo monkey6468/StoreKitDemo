@@ -13,6 +13,7 @@ public enum StoreError: Error { // 错误回调枚举
     case noProduct
 }
 
+@available(iOS 15.0, *)
 class Store: ObservableObject {
 
     public var stateBlock:((_ state: StoreState, _ transaction: Transaction?)->(Void))! // 状态回调
