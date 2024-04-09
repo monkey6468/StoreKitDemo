@@ -40,7 +40,7 @@
     }
     
     if (@available(iOS 15.0, *)) {
-        NSLog(@"Apple购买StoreKit2");
+        NSLog(@"Apple购买方式 V2");
         ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
         [manger storeKitLaunch];
         [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
@@ -51,7 +51,7 @@
                                  originalID:originalID];
         };
     } else {
-        NSLog(@"Apple购买StoreKit1");
+        NSLog(@"Apple购买方式 V1");
         [self payGoodsWithStoreKit1];
     }
 }
@@ -72,7 +72,7 @@
                     self.payDictTemp = payDict;
                 }
             }
-            // LOG_D(@"Apple已购买成功商品列表: %@", list);
+            // NSLog(@"Apple已购买成功商品列表: %@", list);
             if (receipt.length) {
                 self.receipt = receipt;
                 [self returnResultV1WithStatus:StoreState_success];
@@ -131,22 +131,16 @@
 }
 
 - (void)returnResultV1WithStatus:(StoreState)status {
-//    NSLog(@"Apple V1购买商品状态:%ld, orderID: %@", status, [self getPayId]);
-    if (status == 1) {
-        [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDictTemp];
-    }
+    NSLog(@"Apple V1购买商品状态:%ld, orderID: %@", status, [self getPayId]);
     if (self.payV1StatusBlock) {
-        self.payV1StatusBlock(status, self.receipt);
+        self.payV1StatusBlock(status, self.receipt, self.payDictTemp);
     }
 }
 
 - (void)returnResultV2WithStatus:(StoreState)status
                    transactionId:(NSString *)transactionId
                       originalID:(NSString *)originalID {
-//    NSLog(@"Apple V2购买商品状态:%ld, orderID: %@", status, [self getPayId]);
-    if (status == 1) {
-        [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDictTemp];
-    }
+    NSLog(@"Apple V2购买商品状态:%ld, orderID: %@", status, [self getPayId]);
     if (self.payV2StatusBlock) {
         self.payV2StatusBlock(status, transactionId, originalID);
     }
