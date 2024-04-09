@@ -12,11 +12,9 @@
 
 @interface ApplePayTool ()
 
-@property (nonatomic, copy) void (^payStatusBlock)(StoreState status, NSString *receipt);
-
 @property (nonatomic, strong) NSDictionary *payDictTemp;
 @property (nonatomic, copy) NSString *productID; // 商品标识，苹果内购需提供（开发者网站设置时必须为大写）
-@property (nonatomic, copy) NSString *receipt;  // 苹果支付成功的凭证
+@property (nonatomic, copy) NSString *receipt;   // 苹果支付成功的凭证
 @property (nonatomic, copy) NSString *orderNumber;
 
 @end
@@ -25,17 +23,19 @@
 
 - (void)requestAppleIAPWithProductID:(NSString *)productID
                          orderNumber:(nonnull NSString *)orderNumber
-                            payBlock:(nonnull void (^)(StoreState, NSString *_Nonnull))payBlock {
+                          payV1Block:(AppleV1Block)payV1Block
+                          payV2Block:(AppleV2Block)payV2Block {
     self.productID = productID;
     self.orderNumber = orderNumber;
-    self.payStatusBlock = payBlock;
-    
+    self.payV1StatusBlock = payV1Block;
+    self.payV2StatusBlock = payV2Block;
+
     [self payGoodsWithStoreKit];
 }
 
 - (void)payGoodsWithStoreKit {
     if (self.productID.length == 0) {
-        [self returnResultWithStatus:StoreState_noProductTag];
+        [self returnResultV1WithStatus:StoreState_noProductTag];
         return;
     }
     
@@ -53,8 +53,10 @@
     [manger storeKitLaunch];
     [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
     __strong typeof(self) sself = self;
-    manger.payClosure = ^(StoreState status) {
-        [sself returnResultWithStatus:status];
+    manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
+        [sself returnResultV2WithStatus:status
+                          transactionId:transactionId
+                             originalID:originalID];
     };
 }
 
@@ -77,7 +79,7 @@
             // LOG_D(@"Apple已购买成功商品列表: %@", list);
             if (receipt.length) {
                 self.receipt = receipt;
-                [self returnResultWithStatus:StoreState_success];
+                [self returnResultV1WithStatus:StoreState_success];
             } else {
                 [self payGoodsWithApple];
             }
@@ -88,24 +90,24 @@
 }
 
 - (void)payGoodsWithApple {
-    [self returnResultWithStatus:StoreState_start];
+    [self returnResultV1WithStatus:StoreState_start];
     [[KKApplePayManner sharedInstance] requestProducts:@[ self.productID ]
                                         withCompletion:^(SKProductsRequest *request, SKProductsResponse *response, NSError *error) {
         if (!error) {
             NSArray *products = [KKApplePayManner sharedInstance].products;
             if (products.count <= 0) {
-                [self returnResultWithStatus:StoreState_noProduct];
+                [self returnResultV1WithStatus:StoreState_noProduct];
             } else {
                 [self requestPayGood];
             }
         } else {
-            [self returnResultWithStatus:StoreState_lists];
+            [self returnResultV1WithStatus:StoreState_lists];
         }
     }];
 }
 
 - (void)requestPayGood {
-    [self returnResultWithStatus:StoreState_pay];
+    [self returnResultV1WithStatus:StoreState_pay];
     NSArray *products = [KKApplePayManner sharedInstance].products;
     [[KKApplePayManner sharedInstance] buyProduct:products.firstObject
                                      onCompletion:^(SKPaymentTransaction *transaction, NSError *error) {
@@ -125,20 +127,32 @@
             payDict[key] = receipt;
             [[KKApplePayManner sharedInstance] savePaymentVoucher:payDict];
             self.receipt = receipt;
-            [self returnResultWithStatus:StoreState_success];
+            [self returnResultV1WithStatus:StoreState_success];
         } else {
-            [self returnResultWithStatus:(StoreState)transaction.transactionState];
+            [self returnResultV1WithStatus:(StoreState)transaction.transactionState];
         }
     }];
 }
 
-- (void)returnResultWithStatus:(StoreState)status {
-//    NSLog(@"Apple购买商品状态:%ld, orderID: %@", status, [self getPayId]);
+- (void)returnResultV1WithStatus:(StoreState)status {
+//    NSLog(@"Apple V1购买商品状态:%ld, orderID: %@", status, [self getPayId]);
     if (status == 1) {
         [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDictTemp];
     }
-    if (self.payStatusBlock) {
-        self.payStatusBlock(status, self.receipt);
+    if (self.payV1StatusBlock) {
+        self.payV1StatusBlock(status, self.receipt);
+    }
+}
+
+- (void)returnResultV2WithStatus:(StoreState)status
+                   transactionId:(NSString *)transactionId
+                      originalID:(NSString *)originalID {
+//    NSLog(@"Apple V2购买商品状态:%ld, orderID: %@", status, [self getPayId]);
+    if (status == 1) {
+        [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDictTemp];
+    }
+    if (self.payV2StatusBlock) {
+        self.payV2StatusBlock(status, transactionId, originalID);
     }
 }
 

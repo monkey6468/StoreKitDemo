@@ -23,13 +23,21 @@ typedef NS_ENUM(NSInteger, StoreState) {
     StoreState_userCancelled,
     StoreState_pending,
     StoreState_unowned,
+    StoreState_verifiedFailed, // 校验失败
     // 其它: SKPaymentTransactionState
 };
 @interface ApplePayTool : NSObject
 
+typedef void(^AppleV1Block)(StoreState status, NSString *receipt);
+typedef void(^AppleV2Block)(StoreState status, NSString *transactionId, NSString *originalID);
+
+@property (copy, nonatomic) AppleV1Block payV1StatusBlock;
+@property (copy, nonatomic) AppleV2Block payV2StatusBlock;
+
 - (void)requestAppleIAPWithProductID:(NSString *)productID
-                         orderNumber:(NSString *)orderNumber
-                            payBlock:(void (^)(StoreState status, NSString *receipt))payBlock;
+                         orderNumber:(nonnull NSString *)orderNumber
+                          payV1Block:(AppleV1Block)payV1Block
+                          payV2Block:(AppleV2Block)payV2Block;
 
 @end
 

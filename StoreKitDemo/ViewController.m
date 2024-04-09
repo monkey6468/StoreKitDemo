@@ -23,14 +23,12 @@
 
 - (IBAction)onActionPurchase:(UIButton *)sender {
     ApplePayTool *tool = [[ApplePayTool alloc]init];
-    [tool requestAppleIAPWithProductID:@"VW"
+    [tool requestAppleIAPWithProductID:@"BENZ"
                            orderNumber:@"123456789"
-                              payBlock:^(StoreState status, NSString * _Nonnull receipt) {
-        if (@available(iOS 15.0, *)) {
-            NSLog(@"onActionPurchase1 :%ld - %@", status, receipt);
-        } else {
-            NSLog(@"onActionPurchase2 :%ld - %@", status, receipt);
-        }
+                            payV1Block:^(StoreState status, NSString * _Nonnull receipt) {
+        NSLog(@"onActionPurchase v1 :%ld - %@", status, receipt);
+    } payV2Block:^(StoreState status, NSString * _Nonnull transactionId, NSString * _Nonnull originalID) {
+        NSLog(@"onActionPurchase v2 :%ld - %@ - %@", status, transactionId, originalID);
     }];
 }
 
