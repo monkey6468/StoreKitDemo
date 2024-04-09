@@ -41,23 +41,19 @@
     
     if (@available(iOS 15.0, *)) {
         NSLog(@"Apple购买StoreKit2");
-        [self payGoodsWithStoreKit2];
+        ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
+        [manger storeKitLaunch];
+        [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
+        __strong typeof(self) sself = self;
+        manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
+            [sself returnResultV2WithStatus:status
+                              transactionId:transactionId
+                                 originalID:originalID];
+        };
     } else {
         NSLog(@"Apple购买StoreKit1");
         [self payGoodsWithStoreKit1];
     }
-}
-
-- (void)payGoodsWithStoreKit2 {
-    ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
-    [manger storeKitLaunch];
-    [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
-    __strong typeof(self) sself = self;
-    manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
-        [sself returnResultV2WithStatus:status
-                          transactionId:transactionId
-                             originalID:originalID];
-    };
 }
 
 - (void)payGoodsWithStoreKit1 {
