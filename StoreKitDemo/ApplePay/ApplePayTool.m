@@ -43,21 +43,21 @@
         return;
     }
     
-//    if (@available(iOS 15.0, *)) {
-//        NSLog(@"Apple购买方式 V2");
-//        ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
-//        [manger storeKitLaunch];
-//        [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
-//        __strong typeof(self) sself = self;
-//        manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
-//            sself.reponseModel.transactionId = transactionId;
-//            sself.reponseModel.originalID = originalID;
-//            [sself returnResultV2WithStatus:status];
-//        };
-//    } else {
+    if (@available(iOS 15.0, *)) {
+        NSLog(@"Apple购买方式 V2");
+        ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
+        [manger storeKitLaunch];
+        [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
+        __strong typeof(self) sself = self;
+        manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
+            sself.reponseModel.transactionId = transactionId;
+            sself.reponseModel.originalID = originalID;
+            [sself returnResultV2WithStatus:status];
+        };
+    } else {
         NSLog(@"Apple购买方式 V1");
         [self payGoodsWithStoreKit1];
-//    }
+    }
 }
 
 - (void)payGoodsWithStoreKit1 {
