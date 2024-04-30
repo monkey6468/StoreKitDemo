@@ -25,18 +25,33 @@ typedef NS_ENUM(NSInteger, StoreState) {
     StoreState_unowned,
     // 其它: SKPaymentTransactionState
 };
-@interface ApplePayTool : NSObject
-// payDict，因为内部有存储，但v1版本自己服务器验证成功后，需要移除 [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDict];
-typedef void(^AppleV1Block)(StoreState status, NSString *receipt, NSDictionary *payDict);
-typedef void(^AppleV2Block)(StoreState status, NSString *transactionId, NSString *originalID);
 
-@property (copy, nonatomic) AppleV1Block payV1StatusBlock;
-@property (copy, nonatomic) AppleV2Block payV2StatusBlock;
+typedef NS_ENUM(NSInteger, ApplePayType) {
+    ApplePayType_V1,
+    ApplePayType_V2,
+};
+
+@interface ApplePayResponse : NSObject
+
+@property (nonatomic, assign) ApplePayType type;
+@property (nonatomic, assign) StoreState status;
+
+// payDict 「[self getPayId]:{receipt，currency，price}」，因为内部有存储，但v1版本自己服务器验证成功后，需要移除 [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDict];
+@property (nonatomic, strong) NSDictionary *payDict;
+@property (nonatomic, strong) NSString *transactionId;
+@property (nonatomic, strong) NSString *originalID;
+
+@end
+
+@interface ApplePayTool : NSObject
+
+typedef void(^ApplePayBlock)(ApplePayResponse *response);
+
+@property (copy, nonatomic) ApplePayBlock payBlock;
 
 - (void)requestAppleIAPWithProductID:(NSString *)productID
                          orderNumber:(nonnull NSString *)orderNumber
-                          payV1Block:(AppleV1Block)payV1Block
-                          payV2Block:(AppleV2Block)payV2Block;
+                            payBlock:(ApplePayBlock)payBlock;
 
 @end
 

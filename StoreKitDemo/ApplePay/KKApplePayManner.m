@@ -8,10 +8,11 @@
 
 #import "KKApplePayManner.h"
 
-#define k_applePayResult @"applePayResult"
+#define k_applePayResult @"applePayV1Result" // 用于v1版本支付
 
 @interface KKApplePayManner () <SKPaymentTransactionObserver, SKProductsRequestDelegate>
 @property (strong, nonatomic) SKProductsRequest *requestProducts; //请求商品列表
+@property (strong, nonatomic) NSArray *productIdentifiers; //请求商品列表
 
 @property (copy, nonatomic) KKApplePayMannerProductsResponseBlock productsResponseBlock;       //获取商品列表回调
 @property (copy, nonatomic) KKApplePayMannerBuyProductsResponseBlock buyProductsResponseBlock; //购买商品回调
@@ -36,13 +37,17 @@ DEF_SINGLETON(KKApplePayManner);
 //请求苹果API，获取商品列表  products=商品id
 - (void)requestProducts:(NSArray<NSString *> *)productIdentifiers withCompletion:(KKApplePayMannerProductsResponseBlock)completion {
     //配置请求商品ids
+    self.productIdentifiers = productIdentifiers;
     NSSet *set = [[NSSet alloc] initWithArray:productIdentifiers];
     self.requestProducts = [[SKProductsRequest alloc] initWithProductIdentifiers:set];
     self.requestProducts.delegate = self;
-    self.productsResponseBlock = completion;
+    if (completion) {
+        self.productsResponseBlock = completion;
+    }
     //开始请求
     [self.requestProducts start];
 }
+
 //购买商品
 - (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(KKApplePayMannerBuyProductsResponseBlock)completion {
     self.buyProductsResponseBlock = completion;
@@ -88,8 +93,14 @@ DEF_SINGLETON(KKApplePayManner);
         }
     });
 }
+// 不登录账号时支付，输入支付账号后，支付弹窗弹起
+- (void)paymentQueueDidChangeStorefront:(SKPaymentQueue *)queue {
+    [self requestProducts:self.productIdentifiers
+           withCompletion:nil];
+}
 //正在将事务添加到服务器队列。（正在购买）
 - (void)purchasingTransaction:(SKPaymentTransaction *)transaction {
+    
 }
 //事务在队列中，用户已被收费。客户应完成交易。（客户端完成交易）
 - (void)purchasedTransaction:(SKPaymentTransaction *)transaction {
@@ -127,6 +138,12 @@ DEF_SINGLETON(KKApplePayManner);
     dispatch_async(dispatch_get_main_queue(), ^{
         //缓存请求成功的商品信息
         self.products = [response.products copy];
+        
+//        if (self.products.count) {
+//            NSString *storeCountryCode = [self getCurrentItunesStoreCountryFromProudct:self.products.firstObject];
+//            NSLog(@"xwh=== didReceiveResponse：%@", storeCountryCode);
+//        }
+        
         //清除请求状态
         self.requestProducts.delegate = nil;
         self.requestProducts = nil;
@@ -136,6 +153,14 @@ DEF_SINGLETON(KKApplePayManner);
         }
     });
 }
+
+//获取当前iTunesStore国家/地区
+- (NSString *)getCurrentItunesStoreCountryFromProudct:(SKProduct *)aProudct {
+    NSLocale *storeLocale = aProudct.priceLocale;
+    NSString *storeCountry = (NSString *)CFLocaleGetValue((CFLocaleRef)storeLocale, kCFLocaleCountryCode);
+    return storeCountry;
+}
+
 //获取商品列表失败回调
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{

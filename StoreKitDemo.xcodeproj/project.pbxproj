@@ -14,10 +14,10 @@
 		8D5EC41C2BBBA5B3002F4673 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5EC41B2BBBA5B3002F4673 /* Assets.xcassets */; };
 		8D5EC41F2BBBA5B3002F4673 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8D5EC41E2BBBA5B3002F4673 /* Base */; };
 		8D5EC4222BBBA5B3002F4673 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4212BBBA5B3002F4673 /* main.m */; };
-		8D5EC42A2BBBA978002F4673 /* StoreKit2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4292BBBA978002F4673 /* StoreKit2.swift */; };
-		8D5EC4302BBBA9D2002F4673 /* ApplePayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC42C2BBBA9D2002F4673 /* ApplePayTool.m */; };
-		8D5EC4312BBBA9D2002F4673 /* KKApplePayManner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC42E2BBBA9D2002F4673 /* KKApplePayManner.m */; };
-		8DB513B02BBC26B5009DE1A5 /* ApplePay2Manger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB513AF2BBC26B5009DE1A5 /* ApplePay2Manger.swift */; };
+		8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */; };
+		8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */; };
+		8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */; };
+		8DC2BAA92BE0D8B200FBCEF5 /* StoreKit2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,12 +34,12 @@
 		8D5EC4202BBBA5B3002F4673 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D5EC4212BBBA5B3002F4673 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D5EC4282BBBA977002F4673 /* StoreKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StoreKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
-		8D5EC4292BBBA978002F4673 /* StoreKit2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKit2.swift; sourceTree = "<group>"; };
-		8D5EC42B2BBBA9D2002F4673 /* ApplePayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplePayTool.h; sourceTree = "<group>"; };
-		8D5EC42C2BBBA9D2002F4673 /* ApplePayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplePayTool.m; sourceTree = "<group>"; };
-		8D5EC42D2BBBA9D2002F4673 /* KKApplePayManner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKApplePayManner.h; sourceTree = "<group>"; };
-		8D5EC42E2BBBA9D2002F4673 /* KKApplePayManner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKApplePayManner.m; sourceTree = "<group>"; };
-		8DB513AF2BBC26B5009DE1A5 /* ApplePay2Manger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePay2Manger.swift; sourceTree = "<group>"; };
+		8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePay2Manger.swift; sourceTree = "<group>"; };
+		8DC2BA9F2BE0D8B200FBCEF5 /* ApplePayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplePayTool.h; sourceTree = "<group>"; };
+		8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplePayTool.m; sourceTree = "<group>"; };
+		8DC2BAA12BE0D8B200FBCEF5 /* KKApplePayManner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKApplePayManner.h; sourceTree = "<group>"; };
+		8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKApplePayManner.m; sourceTree = "<group>"; };
+		8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKit2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +78,7 @@
 				8D5EC4132BBBA5B1002F4673 /* SceneDelegate.m */,
 				8D5EC4152BBBA5B1002F4673 /* ViewController.h */,
 				8D5EC4162BBBA5B1002F4673 /* ViewController.m */,
-				8D5EC42F2BBBA9D2002F4673 /* ApplePay */,
+				8DC2BAA42BE0D8B200FBCEF5 /* ApplePay */,
 				8D5EC4182BBBA5B1002F4673 /* Main.storyboard */,
 				8D5EC41B2BBBA5B3002F4673 /* Assets.xcassets */,
 				8D5EC41D2BBBA5B3002F4673 /* LaunchScreen.storyboard */,
@@ -89,15 +89,15 @@
 			path = StoreKitDemo;
 			sourceTree = "<group>";
 		};
-		8D5EC42F2BBBA9D2002F4673 /* ApplePay */ = {
+		8DC2BAA42BE0D8B200FBCEF5 /* ApplePay */ = {
 			isa = PBXGroup;
 			children = (
-				8D5EC42B2BBBA9D2002F4673 /* ApplePayTool.h */,
-				8D5EC42C2BBBA9D2002F4673 /* ApplePayTool.m */,
-				8D5EC42D2BBBA9D2002F4673 /* KKApplePayManner.h */,
-				8D5EC42E2BBBA9D2002F4673 /* KKApplePayManner.m */,
-				8D5EC4292BBBA978002F4673 /* StoreKit2.swift */,
-				8DB513AF2BBC26B5009DE1A5 /* ApplePay2Manger.swift */,
+				8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */,
+				8DC2BA9F2BE0D8B200FBCEF5 /* ApplePayTool.h */,
+				8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */,
+				8DC2BAA12BE0D8B200FBCEF5 /* KKApplePayManner.h */,
+				8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */,
+				8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */,
 			);
 			path = ApplePay;
 			sourceTree = "<group>";
@@ -173,14 +173,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D5EC42A2BBBA978002F4673 /* StoreKit2.swift in Sources */,
-				8D5EC4302BBBA9D2002F4673 /* ApplePayTool.m in Sources */,
-				8DB513B02BBC26B5009DE1A5 /* ApplePay2Manger.swift in Sources */,
+				8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */,
 				8D5EC4172BBBA5B1002F4673 /* ViewController.m in Sources */,
-				8D5EC4312BBBA9D2002F4673 /* KKApplePayManner.m in Sources */,
 				8D5EC4112BBBA5B1002F4673 /* AppDelegate.m in Sources */,
 				8D5EC4222BBBA5B3002F4673 /* main.m in Sources */,
+				8DC2BAA92BE0D8B200FBCEF5 /* StoreKit2.swift in Sources */,
 				8D5EC4142BBBA5B1002F4673 /* SceneDelegate.m in Sources */,
+				8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */,
+				8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
