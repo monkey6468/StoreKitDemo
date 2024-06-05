@@ -12,20 +12,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, StoreState) {
-    StoreState_success = 100,  // 购买成功
-    StoreState_verifiedServer, // 等待服务器验证
-    StoreState_userCancelled,  // 用户取消支付
-    StoreState_verifiedFailed, // 校验失败
-    StoreState_noProduct,      // 购买商品不存在
-    StoreState_lists,          // 购买商品列表获取失败
-    StoreState_noProductTag,   // 商品标识不存在
-    StoreState_start,
-    StoreState_pay,
-    StoreState_pending,
-    StoreState_unowned,
+    StoreState_success = 100,        // 购买成功
+    StoreState_verifiedServer = 101, // 等待服务器验证
+    StoreState_userCancelled = 102,  // 用户取消支付
+    StoreState_verifiedFailed = 103, // 校验失败
+    StoreState_noProduct = 104,      // 购买商品不存在
+    StoreState_lists = 105,          // 购买商品列表获取失败
+    StoreState_noProductTag = 106,   // 商品标识不存在
+    StoreState_start = 107,
+    StoreState_pay = 108,
+    StoreState_pending = 109,
+    StoreState_unowned = 110,
     // 其它: SKPaymentTransactionState
 };
-
 typedef NS_ENUM(NSInteger, ApplePayType) {
     ApplePayType_V1,
     ApplePayType_V2,

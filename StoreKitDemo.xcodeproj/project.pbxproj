@@ -14,6 +14,8 @@
 		8D5EC41C2BBBA5B3002F4673 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5EC41B2BBBA5B3002F4673 /* Assets.xcassets */; };
 		8D5EC41F2BBBA5B3002F4673 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8D5EC41E2BBBA5B3002F4673 /* Base */; };
 		8D5EC4222BBBA5B3002F4673 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4212BBBA5B3002F4673 /* main.m */; };
+		8D9CB7932C106D260082AF77 /* InAppPurchaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9CB7902C106D260082AF77 /* InAppPurchaseError.swift */; };
+		8D9CB7942C106D260082AF77 /* InAppPurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9CB7912C106D260082AF77 /* InAppPurchaseService.swift */; };
 		8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */; };
 		8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */; };
 		8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */; };
@@ -34,6 +36,8 @@
 		8D5EC4202BBBA5B3002F4673 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D5EC4212BBBA5B3002F4673 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D5EC4282BBBA977002F4673 /* StoreKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StoreKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		8D9CB7902C106D260082AF77 /* InAppPurchaseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseError.swift; sourceTree = "<group>"; };
+		8D9CB7912C106D260082AF77 /* InAppPurchaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseService.swift; sourceTree = "<group>"; };
 		8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePay2Manger.swift; sourceTree = "<group>"; };
 		8DC2BA9F2BE0D8B200FBCEF5 /* ApplePayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplePayTool.h; sourceTree = "<group>"; };
 		8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplePayTool.m; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 		8D5EC4032BBBA5B1002F4673 = {
 			isa = PBXGroup;
 			children = (
+				8D9CB7922C106D260082AF77 /* InAppPurchase */,
 				8D5EC40E2BBBA5B1002F4673 /* StoreKitDemo */,
 				8D5EC40D2BBBA5B1002F4673 /* Products */,
 			);
@@ -87,6 +92,15 @@
 				8D5EC4282BBBA977002F4673 /* StoreKitDemo-Bridging-Header.h */,
 			);
 			path = StoreKitDemo;
+			sourceTree = "<group>";
+		};
+		8D9CB7922C106D260082AF77 /* InAppPurchase */ = {
+			isa = PBXGroup;
+			children = (
+				8D9CB7902C106D260082AF77 /* InAppPurchaseError.swift */,
+				8D9CB7912C106D260082AF77 /* InAppPurchaseService.swift */,
+			);
+			path = InAppPurchase;
 			sourceTree = "<group>";
 		};
 		8DC2BAA42BE0D8B200FBCEF5 /* ApplePay */ = {
@@ -176,10 +190,12 @@
 				8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */,
 				8D5EC4172BBBA5B1002F4673 /* ViewController.m in Sources */,
 				8D5EC4112BBBA5B1002F4673 /* AppDelegate.m in Sources */,
+				8D9CB7942C106D260082AF77 /* InAppPurchaseService.swift in Sources */,
 				8D5EC4222BBBA5B3002F4673 /* main.m in Sources */,
 				8DC2BAA92BE0D8B200FBCEF5 /* StoreKit2.swift in Sources */,
 				8D5EC4142BBBA5B1002F4673 /* SceneDelegate.m in Sources */,
 				8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */,
+				8D9CB7932C106D260082AF77 /* InAppPurchaseError.swift in Sources */,
 				8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,6 +347,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = E54SCXFP9M;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StoreKitDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -363,6 +383,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = E54SCXFP9M;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StoreKitDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

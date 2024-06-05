@@ -147,10 +147,10 @@ class Store: ObservableObject {
             // 修改update 为 unfinished?
             for await result in Transaction.updates { // 会导致二次校验？
                 do {
-//                    print("iap: updates")
-//                    print("result:\(result)")
-//                    let transaction = try await self.verifiedAndFinish(result)
-//                    print("transaction:\(String(describing: transaction))")
+                    print("iap: updates")
+                    print("result:\(result)")
+                    let transaction = try await self.verifiedAndFinish(result)
+                    print("transaction:\(String(describing: transaction))")
                 } catch {
                     // StoreKit has a transaction that fails verification. Don't deliver content to the user.
                     print("Transaction failed verification")

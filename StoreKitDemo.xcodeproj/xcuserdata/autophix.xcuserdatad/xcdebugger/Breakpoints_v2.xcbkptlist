@@ -7,38 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9960DD78-2C06-435D-AEB3-93765AFABD12"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "StoreKitDemo/ApplePay/ApplePay2Manger.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "storeKitPay(productId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FC3C4FB0-2B4E-4A45-AA13-A74BE7217A39"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "StoreKitDemo/ApplePay/ApplePay2Manger.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "storeKitFinish(Id:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "3267C6CD-14C7-431D-AC54-06DCEC00C76A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -46,8 +14,8 @@
             filePath = "StoreKitDemo/ApplePay/StoreKit2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "verifiedAndFinish(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,10 +30,116 @@
             filePath = "StoreKitDemo/ApplePay/StoreKit2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "uploadServer(for:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "34986678-C287-4850-9B19-F725C1C06323"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "StoreKitDemo/ApplePay/Mercato/PurchaseController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "makePurchase(product:quantity:finishAutomatically:appAccountToken:simulatesAskToBuyInSandbox:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D6DD7C60-C370-4F2B-9AAA-486F5ABA86D9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "StoreKitDemo/ApplePay/StoreKit2.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "purchase(_:orderID:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2BE47321-0F34-402F-B564-AF9A23A040B3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "StoreKitDemo/ApplePay/StoreKit2.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "refunRequest(for:scene:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2BE47321-0F34-402F-B564-AF9A23A040B3 - 1109a43ed89f2af0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StoreKitDemo.Store.refunRequest(for: Swift.UInt64, scene: __C.UIWindowScene) async -&gt; ()"
+                  moduleName = "StoreKitDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/StoreKitDemo/ApplePay/StoreKit2.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41">
+               </Location>
+               <Location
+                  uuid = "2BE47321-0F34-402F-B564-AF9A23A040B3 - b93c582814f26f5d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) await resume partial function for StoreKitDemo.Store.refunRequest(for: Swift.UInt64, scene: __C.UIWindowScene) async -&gt; ()"
+                  moduleName = "StoreKitDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/StoreKitDemo/ApplePay/StoreKit2.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41">
+               </Location>
+               <Location
+                  uuid = "2BE47321-0F34-402F-B564-AF9A23A040B3 - a4d7d4b9a13e9b40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) suspend resume partial function for StoreKitDemo.Store.refunRequest(for: Swift.UInt64, scene: __C.UIWindowScene) async -&gt; ()"
+                  moduleName = "StoreKitDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/StoreKitDemo/ApplePay/StoreKit2.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41">
+               </Location>
+               <Location
+                  uuid = "2BE47321-0F34-402F-B564-AF9A23A040B3 - 9c9ed05a0755df42"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for StoreKitDemo.Store.refunRequest(for: Swift.UInt64, scene: __C.UIWindowScene) async -&gt; ()"
+                  moduleName = "StoreKitDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/StoreKitDemo/ApplePay/StoreKit2.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
