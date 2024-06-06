@@ -13,21 +13,9 @@ struct StoreView: View {
 
     var body: some View {
         List {
-            Section("非消耗型") {
-                ForEach(store.cars) { car in
-                    ListCellView(product: car)
-                }
-            }
             Section("消耗型") {
                 ForEach(store.fuel) { car in
                     ListCellView(product: car)
-                }
-            }
-            .listStyle(GroupedListStyle())
-
-            Section("Navigation: Non-Renewing Subscription") {
-                ForEach(store.nonRenewables) { product in
-                    ListCellView(product: product, purchasingEnabled: store.purchasedSubscriptions.isEmpty)
                 }
             }
             .listStyle(GroupedListStyle())
