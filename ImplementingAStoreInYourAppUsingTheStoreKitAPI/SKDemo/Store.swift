@@ -153,19 +153,6 @@ class Store: ObservableObject {
         }
     }
 
-    func isPurchased(_ product: Product) async throws -> Bool {
-        // 确定用户是否购买了给定的产品.
-        switch product.type {
-        case .nonRenewable:
-            return purchasedNonRenewableSubscriptions.contains(product)
-        case .nonConsumable:
-            return purchasedCars.contains(product)
-        case .autoRenewable:
-            return purchasedSubscriptions.contains(product)
-        default:
-            return false
-        }
-    }
 
     func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         // Check whether the JWS passes StoreKit verification.
