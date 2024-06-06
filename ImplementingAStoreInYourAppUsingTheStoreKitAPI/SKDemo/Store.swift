@@ -29,10 +29,7 @@ public enum SubscriptionTier: Int, Comparable {
 }
 
 class Store: ObservableObject {
-    @Published private(set) var cars: [Product]
     @Published private(set) var fuel: [Product]
-    @Published private(set) var subscriptions: [Product]
-    @Published private(set) var nonRenewables: [Product]
 
     @Published private(set) var purchasedCars: [Product] = []
     @Published private(set) var purchasedNonRenewableSubscriptions: [Product] = []
@@ -47,10 +44,7 @@ class Store: ObservableObject {
         productIdToEmoji = Store.loadProductIdToEmojiData()
 
         // Initialize empty products, and then do a product request asynchronously to fill them in.
-        cars = []
         fuel = []
-        subscriptions = []
-        nonRenewables = []
 
         // Start a transaction listener as close to app launch as possible so you don't miss any transactions.
         updateListenerTask = listenForTransactions()
@@ -104,9 +98,6 @@ class Store: ObservableObject {
             // Request products from the App Store using the identifiers that the Products.plist file defines.
             let storeProducts = try await Product.products(for: productIdToEmoji.keys)
 
-            var newCars: [Product] = []
-            var newSubscriptions: [Product] = []
-            var newNonRenewables: [Product] = []
             var newFuel: [Product] = []
 
             // Filter the products into categories based on their type.
@@ -114,12 +105,10 @@ class Store: ObservableObject {
                 switch product.type {
                 case .consumable:
                     newFuel.append(product)
-                case .nonConsumable:
-                    newCars.append(product)
-                case .autoRenewable:
-                    newSubscriptions.append(product)
-                case .nonRenewable:
-                    newNonRenewables.append(product)
+                case .nonConsumable,
+                    .autoRenewable,
+                    .nonRenewable:
+                    print("product.type\(product.type)")
                 default:
                     // Ignore this product.
                     print("Unknown product")
@@ -127,9 +116,6 @@ class Store: ObservableObject {
             }
 
             // Sort each product category by price, lowest to highest, to update the store.
-            cars = sortByPrice(newCars)
-            subscriptions = sortByPrice(newSubscriptions)
-            nonRenewables = sortByPrice(newNonRenewables)
             fuel = sortByPrice(newFuel)
         } catch {
             print("Failed product request from the App Store server: \(error)")
@@ -138,7 +124,13 @@ class Store: ObservableObject {
 
     func purchase(_ product: Product) async throws -> Transaction? {
         // Begin purchasing the `Product` the user selects.
-        let result = try await product.purchase()
+        let uuidString = UUID().uuidString //"367E28C7-CF53-438A-98C3-24DFA11706BF"
+        print("------uuid ------: \(uuidString)")
+        let orderID = "12345678"
+        let uuidConfig = Product.PurchaseOption.appAccountToken(UUID.init(uuidString: uuidString)!)
+        let orderIDConfig = Product.PurchaseOption.custom(key: "orderID", value: orderID)
+
+        let result = try await product.purchase(options: [uuidConfig, orderIDConfig])
 
         switch result {
         case .success(let verification):
@@ -146,12 +138,13 @@ class Store: ObservableObject {
             // this function rethrows the verification error.
             let transaction = try checkVerified(verification)
 
-            // The transaction is verified. Deliver content to the user.
+            // 交易已验证。向用户交付内容.
             await updateCustomerProductStatus()
 
             // Always finish a transaction.
             await transaction.finish()
 
+            print("xwh checkVerified3: \(transaction)")
             return transaction
         case .userCancelled, .pending:
             return nil
@@ -161,7 +154,7 @@ class Store: ObservableObject {
     }
 
     func isPurchased(_ product: Product) async throws -> Bool {
-        // Determine whether the user purchases a given product.
+        // 确定用户是否购买了给定的产品.
         switch product.type {
         case .nonRenewable:
             return purchasedNonRenewableSubscriptions.contains(product)
@@ -179,72 +172,18 @@ class Store: ObservableObject {
         switch result {
         case .unverified:
             // StoreKit parses the JWS, but it fails verification.
+            print("xwh checkVerified2: \(result)")
             throw StoreError.failedVerification
         case .verified(let safe):
             // The result is verified. Return the unwrapped value.
+            print("xwh checkVerified: \(safe)")
             return safe
         }
     }
 
     @MainActor
     func updateCustomerProductStatus() async {
-        var purchasedCars: [Product] = []
-        var purchasedSubscriptions: [Product] = []
-        var purchasedNonRenewableSubscriptions: [Product] = []
-
-        // Iterate through all of the user's purchased products.
-        for await result in Transaction.currentEntitlements {
-            do {
-                // Check whether the transaction is verified. If it isn’t, catch `failedVerification` error.
-                let transaction = try checkVerified(result)
-
-                // Check the `productType` of the transaction and get the corresponding product from the store.
-                switch transaction.productType {
-                case .nonConsumable:
-                    if let car = cars.first(where: { $0.id == transaction.productID }) {
-                        purchasedCars.append(car)
-                    }
-                case .nonRenewable:
-                    if let nonRenewable = nonRenewables.first(where: { $0.id == transaction.productID }),
-                       transaction.productID == "nonRenewing.standard"
-                    {
-                        // Non-renewing subscriptions have no inherent expiration date, so they're always
-                        // contained in `Transaction.currentEntitlements` after the user purchases them.
-                        // This app defines this non-renewing subscription's expiration date to be one year after purchase.
-                        // If the current date is within one year of the `purchaseDate`, the user is still entitled to this
-                        // product.
-                        let currentDate = Date()
-                        let expirationDate = Calendar(identifier: .gregorian).date(byAdding: DateComponents(year: 1),
-                                                                                   to: transaction.purchaseDate)!
-
-                        if currentDate < expirationDate {
-                            purchasedNonRenewableSubscriptions.append(nonRenewable)
-                        }
-                    }
-                case .autoRenewable:
-                    if let subscription = subscriptions.first(where: { $0.id == transaction.productID }) {
-                        purchasedSubscriptions.append(subscription)
-                    }
-                default:
-                    break
-                }
-            } catch {
-                print()
-            }
-        }
-
-        // Update the store information with the purchased products.
-        self.purchasedCars = purchasedCars
-        self.purchasedNonRenewableSubscriptions = purchasedNonRenewableSubscriptions
-
-        // Update the store information with auto-renewable subscription products.
-        self.purchasedSubscriptions = purchasedSubscriptions
-
-        // Check the `subscriptionGroupStatus` to learn the auto-renewable subscription state to determine whether the customer
-        // is new (never subscribed), active, or inactive (expired subscription). This app has only one subscription
-        // group, so products in the subscriptions array all belong to the same group. The statuses that
-        // `product.subscription.status` returns apply to the entire subscription group.
-        subscriptionGroupStatus = try? await subscriptions.first?.subscription?.status.first?.state
+        // to do
     }
 
     func emoji(for productId: String) -> String {
