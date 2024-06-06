@@ -1,12 +1,12 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ See LICENSE folder for this sample’s licensing information.
 
-Abstract:
-A product view for an individual fuel type.
-*/
+ Abstract:
+ A product view for an individual fuel type.
+ */
 
-import SwiftUI
 import StoreKit
+import SwiftUI
 
 struct FuelProductView: View {
     @Environment(\.colorScheme) var colorScheme

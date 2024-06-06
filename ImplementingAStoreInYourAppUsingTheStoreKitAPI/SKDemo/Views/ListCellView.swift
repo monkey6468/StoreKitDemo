@@ -1,12 +1,12 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ See LICENSE folder for this sample’s licensing information.
 
-Abstract:
-A view for an individual car or subscription product that shows a Buy button when it displays within the store.
-*/
+ Abstract:
+ A view for an individual car or subscription product that shows a Buy button when it displays within the store.
+ */
 
-import SwiftUI
 import StoreKit
+import SwiftUI
 
 struct ListCellView: View {
     @EnvironmentObject var store: Store
@@ -64,8 +64,8 @@ struct ListCellView: View {
 
     func subscribeButton(_ subscription: Product.SubscriptionInfo) -> some View {
         let unit: String
-        let plural = 1 < subscription.subscriptionPeriod.value
-            switch subscription.subscriptionPeriod.unit {
+        let plural = subscription.subscriptionPeriod.value > 1
+        switch subscription.subscriptionPeriod.unit {
         case .day:
             unit = plural ? "\(subscription.subscriptionPeriod.value) days" : "day"
         case .week:

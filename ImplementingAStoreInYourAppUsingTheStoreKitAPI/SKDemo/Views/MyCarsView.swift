@@ -1,15 +1,15 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ See LICENSE folder for this sample’s licensing information.
 
-Abstract:
-A view showing all the user's purchased cars and subscriptions.
-*/
+ Abstract:
+ A view showing all the user's purchased cars and subscriptions.
+ */
 
-import SwiftUI
 import StoreKit
+import SwiftUI
 
 struct MyCarsView: View {
-    @StateObject var store: Store = Store()
+    @StateObject var store: Store = .init()
 
     var body: some View {
         NavigationView {

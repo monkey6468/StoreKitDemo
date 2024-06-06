@@ -1,9 +1,9 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+ See LICENSE folder for this sample’s licensing information.
 
-Abstract:
-The style of the product buttons that display in the store view.
-*/
+ Abstract:
+ The style of the product buttons that display in the store view.
+ */
 
 import StoreKit
 import SwiftUI
@@ -38,7 +38,7 @@ struct BuyButtonStyle_Previews: PreviewProvider {
             }
             .buttonStyle(BuyButtonStyle())
             .previewDisplayName("Normal")
-            
+
             Button(action: {}) {
                 Image(systemName: "checkmark")
                     .foregroundColor(.white)
