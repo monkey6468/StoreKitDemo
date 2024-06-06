@@ -194,4 +194,42 @@ class Store: ObservableObject {
             return .none
         }
     }
+    
+    // 退订
+//    func refunRequest(for transactionId: UInt64, scene: UIWindowScene) async {
+//        do {
+//           let ret = try await Transaction.beginRefundRequest(transactionId)
+//            print("refunRequest:\(ret)")
+//        } catch {
+//            print("iap error")
+//        }
+//    }
+    
+//    func refunRequest(for transactionId: UInt64) async {
+//        if let windowScene = self.view.window?.windowScene {
+//        do {
+//            let ret = try await StoreKit.Transaction.beginRefundRequest(for: transactionId, in: windowScene)
+//            print("refunRequest:\(ret)")
+//        } catch {
+//            print("iap error")
+//        }
+//        
+//        }
+//
+////        do {
+////            let ret = try await Transaction.beginRefundRequest(for: transactionId, in: scene)
+////            print("refunRequest:\(ret)")
+////        } catch {
+////            print("iap error")
+////        }
+//    }
+//    @objc public final class StoreKitTransaction : NSObject
+//    {
+//        @objc public static func beginRefundRequest(
+//            for transactionId: UInt64,
+//            in scene: UIWindowScene) async throws {
+//                try await Transaction.beginRefundRequest(for: transactionId, in: scene);
+//        }
+//    }
+
 }

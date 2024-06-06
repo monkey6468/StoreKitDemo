@@ -36,10 +36,41 @@ struct MyCarsView: View {
                         .background(Color.blue)
                         .cornerRadius(15.0)
                 }
+                
+
+                buyButton
+                    .buttonStyle(BuyButtonStyle(isPurchased: false))
+                    .padding()
+                    .disabled(false)
+
             }
         }
         .environmentObject(store)
     }
+    
+    var buyButton: some View {
+        Button(action: {
+            Task {
+                await buy()
+            }
+        }) {
+            Text("Refund")
+                .foregroundColor(.white)
+                .bold()
+        }
+    }
+    
+    func buy() async {
+//        if try await store.refunRequest(for: 2000000620525653) {
+//            
+//            
+//        }
+//
+//        print("Failed purchase for ")
+//        Store.refunRequest(<#T##self: Store##Store#>)
+    }
+    
+    
 }
 
 struct MyCarsView_Previews: PreviewProvider {

@@ -3,4 +3,84 @@
    uuid = "4E9B9416-AD7E-44B7-817A-E9C4F40594CD"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C87A584E-05B9-462E-B43B-C31E36B182DB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SKDemo/Views/ProductDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "fuelPurchaseView"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "C87A584E-05B9-462E-B43B-C31E36B182DB - 650db66b5826e52e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (StoreKit.Product) -&gt; () in SKDemo.ProductDetailView.fuelPurchaseView.getter : some"
+                  moduleName = "SKDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/ImplementingAStoreInYourAppUsingTheStoreKitAPI/SKDemo/Views/ProductDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63">
+               </Location>
+               <Location
+                  uuid = "C87A584E-05B9-462E-B43B-C31E36B182DB - 48a6f2d554f0b191"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (StoreKit.Product) -&gt; () in SKDemo.ProductDetailView.fuelPurchaseView.getter : some"
+                  moduleName = "SKDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/autophix/MyWorkSpace/StoreKitDemo/ImplementingAStoreInYourAppUsingTheStoreKitAPI/SKDemo/Views/ProductDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62858075-8FE3-4B53-AD14-599BA0DB148D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SKDemo/Views/SubscriptionsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "55E91FA5-9954-4681-9686-9575028AAADD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SKDemo/Views/FuelStoreView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
