@@ -25,8 +25,6 @@ struct StoreView: View {
             }
             .listStyle(GroupedListStyle())
 
-            SubscriptionsView()
-
             Section("Navigation: Non-Renewing Subscription") {
                 ForEach(store.nonRenewables) { product in
                     ListCellView(product: product, purchasingEnabled: store.purchasedSubscriptions.isEmpty)

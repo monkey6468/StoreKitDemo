@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		790AF0FD261690CE0020DD40 /* StatusInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790AF0FC261690CE0020DD40 /* StatusInfoView.swift */; };
-		790AF0FF261788390020DD40 /* SubscriptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790AF0FE261788390020DD40 /* SubscriptionsView.swift */; };
 		7935D0E32612C12700031437 /* FuelProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7935D0E22612C12700031437 /* FuelProductView.swift */; };
 		7935D0E52612C29F00031437 /* FuelSupplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7935D0E42612C29F00031437 /* FuelSupplyView.swift */; };
 		793663EE261D233100DB96A9 /* BuyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793663ED261D233100DB96A9 /* BuyButtonStyle.swift */; };
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		64521D9DD36130E828992C91 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		790AF0FC261690CE0020DD40 /* StatusInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusInfoView.swift; sourceTree = "<group>"; };
-		790AF0FE261788390020DD40 /* SubscriptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsView.swift; sourceTree = "<group>"; };
 		7935D0E22612C12700031437 /* FuelProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuelProductView.swift; sourceTree = "<group>"; };
 		7935D0E42612C29F00031437 /* FuelSupplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuelSupplyView.swift; sourceTree = "<group>"; };
 		793663ED261D233100DB96A9 /* BuyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyButtonStyle.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				79A9F981260C691100E57A97 /* MyCarsView.swift */,
 				790AF0FC261690CE0020DD40 /* StatusInfoView.swift */,
 				795B82B3260E7246004A60DE /* StoreView.swift */,
-				790AF0FE261788390020DD40 /* SubscriptionsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -203,7 +200,6 @@
 				793663EE261D233100DB96A9 /* BuyButtonStyle.swift in Sources */,
 				79770BDF260C3DF7007C2E4A /* Store.swift in Sources */,
 				7935D0E52612C29F00031437 /* FuelSupplyView.swift in Sources */,
-				790AF0FF261788390020DD40 /* SubscriptionsView.swift in Sources */,
 				795B82E626115172004A60DE /* FuelStoreView.swift in Sources */,
 				790AF0FD261690CE0020DD40 /* StatusInfoView.swift in Sources */,
 				795B82B2260DAD23004A60DE /* ListCellView.swift in Sources */,
