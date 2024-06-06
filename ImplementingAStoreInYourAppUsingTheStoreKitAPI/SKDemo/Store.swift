@@ -127,7 +127,7 @@ class Store: ObservableObject {
             }
 
             //Sort each product category by price, lowest to highest, to update the store.
-            cars = sortByPrice(newFuel)
+            cars = sortByPrice(newCars)
             subscriptions = sortByPrice(newSubscriptions)
             nonRenewables = sortByPrice(newNonRenewables)
             fuel = sortByPrice(newFuel)

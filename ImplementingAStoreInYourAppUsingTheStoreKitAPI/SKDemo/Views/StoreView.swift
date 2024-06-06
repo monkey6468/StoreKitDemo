@@ -13,8 +13,13 @@ struct StoreView: View {
 
     var body: some View {
         List {
-            Section("Cars") {
+            Section("非消耗型") {
                 ForEach(store.cars) { car in
+                    ListCellView(product: car)
+                }
+            }
+            Section("消耗型") {
+                ForEach(store.fuel) { car in
                     ListCellView(product: car)
                 }
             }

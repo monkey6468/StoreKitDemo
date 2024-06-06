@@ -19,78 +19,33 @@
   ],
   "products" : [
     {
-      "displayPrice" : "1.99",
-      "familyShareable" : false,
-      "internalID" : "36835F3D",
-      "localizations" : [
-        {
-          "description" : "A standard five-seater",
-          "displayName" : "Car",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "VW",
-      "referenceName" : "Car",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "2.99",
-      "familyShareable" : false,
-      "internalID" : "8E64F7F7",
-      "localizations" : [
-        {
-          "description" : "Off-road vehicle",
-          "displayName" : "Sport Utility Vehicle",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "nonconsumable.utilityvehicle",
-      "referenceName" : "Sport Utility Vehicle",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "4.99",
-      "familyShareable" : false,
-      "internalID" : "C63E7D42",
-      "localizations" : [
-        {
-          "description" : "Race Car",
-          "displayName" : "Race Car",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "nonconsumable.racecar",
-      "referenceName" : "Race Car",
-      "type" : "NonConsumable"
-    },
-    {
       "displayPrice" : "0.99",
       "familyShareable" : false,
       "internalID" : "0B8E0C7E",
       "localizations" : [
         {
           "description" : "87",
-          "displayName" : "Fuel87",
+          "displayName" : "宝马",
           "locale" : "en_US"
         }
       ],
-      "productID" : "consumable.fuel.octane87",
-      "referenceName" : "Fuel87",
+      "productID" : "BMW",
+      "referenceName" : "宝马",
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "2.99",
+      "displayPrice" : "0.99",
       "familyShareable" : false,
-      "internalID" : "46DA68EF",
+      "internalID" : "E07B735F",
       "localizations" : [
         {
-          "description" : "91",
-          "displayName" : "Fuel91",
+          "description" : "",
+          "displayName" : "大众2",
           "locale" : "en_US"
         }
       ],
-      "productID" : "consumable.fuel.octane91",
-      "referenceName" : "Fuel91",
+      "productID" : "VW",
+      "referenceName" : "大众",
       "type" : "Consumable"
     }
   ],
