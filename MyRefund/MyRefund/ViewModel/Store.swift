@@ -6,15 +6,14 @@
 //
 
 import Foundation
-import StoreKit
 import os
+import StoreKit
 
 public enum StoreError: Error {
     case failedVerification
 }
 
 class Store: ObservableObject {
-    
     @Published private(set) var consumableProducts: [Product]
     
     @Published private(set) var purchasedTransaction = Set<Transaction>()
@@ -25,7 +24,7 @@ class Store: ObservableObject {
     
     @Published public var isRequestingProduct: Bool = false
     
-    private var updateListenerTask: Task<Void, Error>? = nil
+    private var updateListenerTask: Task<Void, Error>?
     
     private let productIdconfig: [String: String]
     
@@ -34,9 +33,9 @@ class Store: ObservableObject {
     init() {
         logger = Logger(subsystem: "MyRefund", category: "MyRefund")
         
-        
         if let path = Bundle.main.path(forResource: "Products", ofType: "plist"),
-           let plist = FileManager.default.contents(atPath: path) {
+           let plist = FileManager.default.contents(atPath: path)
+        {
             productIdconfig = (try? PropertyListSerialization.propertyList(from: plist, format: nil) as? [String: String]) ?? [:]
         } else {
             productIdconfig = [:]
@@ -45,7 +44,7 @@ class Store: ObservableObject {
         consumableProducts = []
         updateListenerTask = listenForTransaction()
         
-        self.log("Store init")
+        log("Store init")
         
         Task {
             // Initialize the store by starting a product request.
@@ -67,13 +66,13 @@ class Store: ObservableObject {
     }
     
     private func listenForTransaction() -> Task<Void, Error> {
-        return Task.detached {
+        return Task.detached { [self] in
             for await result in Transaction.updates {
                 do {
                     let transaction = try self.checkVerified(result)
                     
                     await self.updatePurchasedTransaction(transaction)
-                    
+                    log("purchased2 success finished")
                     await transaction.finish()
                 } catch {
                     print("Transaction failed verification")
@@ -89,7 +88,6 @@ class Store: ObservableObject {
             while let result = await iterator.next() {
                 let transaction = try checkVerified(result)
                 historyTransaction.append(transaction)
-                print(transaction)
             }
         } catch {
             log("Error update history transaction: \(error.localizedDescription)")
@@ -136,7 +134,14 @@ class Store: ObservableObject {
     
     func purchase(_ product: Product) async throws -> Transaction? {
         log("begin purchase")
-        let result = try await product.purchase()
+
+        let uuidString = UUID().uuidString // "367E28C7-CF53-438A-98C3-24DFA11706BF"
+        print("------uuid ------: \(uuidString)")
+        let orderID = "12345678"
+        let uuidConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuidString)!)
+        let orderIDConfig = Product.PurchaseOption.custom(key: "orderID", value: orderID)
+
+        let result = try await product.purchase(options: [uuidConfig, orderIDConfig])
         
         switch result {
         case .success(let verification):
@@ -147,7 +152,8 @@ class Store: ObservableObject {
             log("receipt: \(receipt)")
             await updatePurchasedTransaction(transaction)
             
-            // Always finish a transaction 
+            // Always finish a transaction
+            log("purchased success finished")
             await transaction.finish()
             
             return transaction
@@ -233,9 +239,8 @@ class Store: ObservableObject {
         }
         return false
     }
-    
 }
 
-extension Data {
-    public func toString() -> String { String(decoding: self, as: UTF8.self) }
+public extension Data {
+    func toString() -> String { String(decoding: self, as: UTF8.self) }
 }
