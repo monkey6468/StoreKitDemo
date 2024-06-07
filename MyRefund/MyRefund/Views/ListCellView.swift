@@ -76,7 +76,7 @@ struct ListCellView: View {
     func buy() async {
         do {
             isLoading = true
-            if try await store.purchase(product) != nil {
+            if try await store.requestBuyProduct(productId: product.id, orderID: "") != nil {
                 withAnimation {
                     isPurchased = true
                 }

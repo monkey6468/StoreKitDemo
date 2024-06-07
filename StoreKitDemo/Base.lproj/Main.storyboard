@@ -17,26 +17,80 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkv-d1-DyV">
-                                <rect key="frame" x="167" y="348.66666666666669" width="59" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="购买"/>
-                                <connections>
-                                    <action selector="onActionPurchase:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rET-q9-5pD"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XyG-h8-UPD">
+                                <rect key="frame" x="16" y="409" width="361" height="34.333333333333314"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProductID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfK-mC-jlF">
+                                        <rect key="frame" x="0.0" y="0.0" width="81" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="VW" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IFy-rI-sjO">
+                                        <rect key="frame" x="89.000000000000014" y="0.0" width="205.33333333333337" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkv-d1-DyV">
+                                        <rect key="frame" x="302.33333333333331" y="0.0" width="58.666666666666686" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="购买"/>
+                                        <connections>
+                                            <action selector="onActionPurchase:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rET-q9-5pD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="wkv-d1-DyV" firstAttribute="centerY" secondItem="XyG-h8-UPD" secondAttribute="centerY" id="Mka-2A-M6W"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xPM-Jb-yXX">
+                                <rect key="frame" x="16" y="463.33333333333331" width="361" height="34.333333333333314"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="transactionID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Owx-Ub-ahD">
+                                        <rect key="frame" x="0.0" y="0.0" width="106.33333333333333" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="transactionID" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9ES-yd-n6S">
+                                        <rect key="frame" x="114.33333333333334" y="0.0" width="180.00000000000003" height="34.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1a-D1-zxX">
+                                        <rect key="frame" x="302.33333333333331" y="0.0" width="58.666666666666686" height="34.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="退款"/>
+                                        <connections>
+                                            <action selector="onActionRefund:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oju-2s-Czc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="T1a-D1-zxX" firstAttribute="centerY" secondItem="xPM-Jb-yXX" secondAttribute="centerY" id="Vao-l1-LY3"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="wkv-d1-DyV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7p5-z9-K6a"/>
-                            <constraint firstItem="wkv-d1-DyV" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-60" id="H8J-Qj-u1k"/>
+                            <constraint firstItem="xPM-Jb-yXX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="0tx-ZH-q30"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XyG-h8-UPD" secondAttribute="trailing" constant="16" id="1li-TB-MC2"/>
+                            <constraint firstItem="XyG-h8-UPD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="39n-lb-nzM"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xPM-Jb-yXX" secondAttribute="trailing" constant="16" id="IwM-QC-uI7"/>
+                            <constraint firstItem="xPM-Jb-yXX" firstAttribute="top" secondItem="XyG-h8-UPD" secondAttribute="bottom" constant="20" id="Ybg-ys-ylp"/>
+                            <constraint firstItem="XyG-h8-UPD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eed-B9-iMX"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="productIDTF" destination="IFy-rI-sjO" id="cBC-3z-qfs"/>
+                        <outlet property="transactionIDTF" destination="9ES-yd-n6S" id="FZX-uL-JVk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="39" y="-27"/>
+            <point key="canvasLocation" x="38.931297709923662" y="-27.464788732394368"/>
         </scene>
     </scenes>
     <resources>

@@ -11,6 +11,7 @@ import StoreKit
 
 public enum StoreError: Error {
     case failedVerification
+    case noProduct
 }
 
 class Store: ObservableObject {
@@ -131,8 +132,23 @@ class Store: ObservableObject {
     }
     
     // MARK: Purchase
+    // 购买某个产品
+    func requestBuyProduct(productId: String, orderID: String) async throws -> Transaction? {
+        do {
+            let list: [String] = [productId]
+            let storeProducts = try await Product.products(for: Set(list))
+            
+            if storeProducts.count > 0 {
+                return try await purchase(storeProducts[0], orderID: orderID)
+            } else {
+                throw StoreError.noProduct // 没有该产品
+            }
+        } catch {
+            throw StoreError.noProduct // 没有该产品
+        }
+    }
     
-    func purchase(_ product: Product) async throws -> Transaction? {
+    func purchase(_ product: Product, orderID: String) async throws -> Transaction? {
         log("begin purchase")
 
         let uuidString = "c001735d-56f6-4a77-a7d8-d9576068b3c0"

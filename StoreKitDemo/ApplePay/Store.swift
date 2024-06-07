@@ -1,14 +1,15 @@
 //
-//  iosStoreKit2.swift
-//  ios_storekit
+//  Store.swift
+//  MyRefund
 //
-//  Created by iOS on 2023/5/23.
+//  Created by peak on 2022/1/28.
 //
 
 import Foundation
+import os
 import StoreKit
 
-public enum StoreError: Error { // 错误回调枚举
+public enum StoreError: Error {
     case failedVerification
     case noProduct
 }
@@ -18,37 +19,133 @@ class Store: ObservableObject {
 
     public var stateBlock:((_ state: StoreState, _ transaction: Transaction?)->(Void))! // 状态回调
     
-    var updateListenerTask: Task<Void, Error>? // 支付事件监听
+    @Published private(set) var consumableProducts: [Product]
     
+    @Published private(set) var purchasedTransaction = Set<Transaction>() // 支付事件监听
+    @Published private(set) var historyTransaction: [Transaction] = []
+    
+    @Published public var isError: Bool = false
+    @Published private(set) var errorMessage = ""
+    
+    @Published public var isRequestingProduct: Bool = false
+    
+    private var updateListenerTask: Task<Void, Error>?
+    
+    private let productIdconfig: [String: String]
+    
+    private let logger: Logger
     var transactionMap: [String: Transaction] // 用于完成Id的缓存map
-    
-    var name: String = "iosStore" // 单例的写法
+
     static let shared = {
         let instance = Store()
         return instance
     }()
 
-    private init() { // 单例需要保证private的私有性质
+    init() {
+        logger = Logger(subsystem: "MyRefund", category: "MyRefund")
+        
+        if let path = Bundle.main.path(forResource: "Products", ofType: "plist"),
+           let plist = FileManager.default.contents(atPath: path)
+        {
+            productIdconfig = (try? PropertyListSerialization.propertyList(from: plist, format: nil) as? [String: String]) ?? [:]
+        } else {
+            productIdconfig = [:]
+        }
+        
+        consumableProducts = []
         transactionMap = [:] // 初始化
+        updateListenerTask = listenForTransaction()
+        
+        log("Store init")
+        
         Task {
-            updateListenerTask = listenForTransactions()
+            // Initialize the store by starting a product request.
+            await requestProducts()
+        }
+        
+        Task {
+            await updateHistoryTransaction()
         }
     }
     
-    // 退订
-    func refunRequest(for transactionId: UInt64, scene: UIWindowScene) async {
+    public func log(_ message: String) {
+        logger.info("\(message, privacy: .public)")
+    }
+    
+    deinit {
+        log("Store deinit")
+        updateListenerTask?.cancel()
+    }
+    
+    private func listenForTransaction() -> Task<Void, Error> {
+        return Task.detached { [self] in
+            for await result in Transaction.updates {
+                do {
+                    let transaction = try self.checkVerified(result)
+                    
+                    await self.updatePurchasedTransaction(transaction)
+                    log("purchased2 success finished")
+                    await transaction.finish()
+                } catch {
+                    print("Transaction failed verification")
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func updateHistoryTransaction() async {
         do {
-           let ret = try await Transaction.beginRefundRequest(for: transactionId, in: scene)
-            print("refunRequest:\(ret)")
+            var iterator = Transaction.all.makeAsyncIterator()
+            while let result = await iterator.next() {
+                let transaction = try checkVerified(result)
+                historyTransaction.append(transaction)
+            }
         } catch {
-            print("iap error")
+            log("Error update history transaction: \(error.localizedDescription)")
+            errorMessage = error.localizedDescription
+            isError = true
         }
     }
     
+    // MARK: Product Request
+
+    @MainActor
+    func requestProducts() async {
+        isRequestingProduct = true
+        do {
+            let storeProducts = try await Product.products(for: productIdconfig.keys)
+            if storeProducts.count == 0 {
+                errorMessage = "Not found products from apple"
+                isError = true
+            }
+            log("request [\(storeProducts.count)] products")
+            
+            for product in storeProducts {
+                switch product.type {
+                case .consumable:
+                    log("consumable product: \(product.description)")
+                    consumableProducts.append(product)
+                case .nonConsumable:
+                    log("non consumable product: \(product.description)")
+                case .autoRenewable:
+                    log("auto renewable product: \(product.description)")
+                default:
+                    log("Unknown product")
+                }
+            }
+        } catch {
+            logger.error("Failed product reqeust: \(error.localizedDescription, privacy: .public)")
+            errorMessage = error.localizedDescription
+            isError = true
+        }
+        isRequestingProduct = false
+    }
+    
+    // MARK: Purchase
     // 购买某个产品
     func requestBuyProduct(productId: String, orderID: String) async throws -> Transaction? {
         stateBlock?(StoreState.start, nil)
-
         do {
             let list: [String] = [productId]
             let storeProducts = try await Product.products(for: Set(list))
@@ -62,26 +159,32 @@ class Store: ObservableObject {
             throw StoreError.noProduct // 没有该产品
         }
     }
-    
-    // 购买
-    private func purchase(_ product: Product, orderID: String) async throws -> Transaction? {
+
+    func purchase(_ product: Product, orderID: String) async throws -> Transaction? {
         stateBlock?(StoreState.pay, nil)
-        // E73B723A-DB8D-4FE3-B6F4-B6B95A1D4A78
-        let uuidString = UUID().uuidString //"367E28C7-CF53-438A-98C3-24DFA11706BF"
-        print("------uuid ------: \(uuidString)")
-        let uuid = Product.PurchaseOption.appAccountToken(UUID.init(uuidString: uuidString)!)
-        let orderID = Product.PurchaseOption.custom(key: "orderID", value: orderID)
-        let result = try await product.purchase(options: [uuid, orderID])
+        log("begin purchase")
+
+        let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: orderID)!)
+        let result = try await product.purchase(options: [orderIDConfig])
         
         switch result {
-        case .success(let verification): // 用户购买完成
-            let transaction = try await verifiedAndFinish(verification)
-//            print("transaction: \(String(describing: transaction))")
+        case .success(let verification):
+            log("purchase success, begin verify")
+            let transaction = try checkVerified(verification)
+            log("check verified success: \(transaction.jsonRepresentation.toString())")
+            let receipt = getAppStoreReceipt()
+            log("receipt: \(receipt)")
+            await updatePurchasedTransaction(transaction)
+            
+            // Always finish a transaction
+            log("purchased success finished")
+            await transaction.finish()
+            
             return transaction
-        case .userCancelled: // 用户取消
+        case .userCancelled:
             stateBlock?(StoreState.userCancelled, nil)
             return nil
-        case .pending: // 此次购买被挂起
+        case .pending:
             stateBlock?(StoreState.pending, nil)
             return nil
         default:
@@ -90,17 +193,47 @@ class Store: ObservableObject {
         }
     }
     
-    // 校验
-    func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
-        // Check whether the JWS passes StoreKit verification.
+    /// Reference:
+    /// https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/validating_receipts_with_the_app_store
+    /// In the sandbox environment and in StoreKit Testing in Xcode, the app receipt is present only after the tester makes the first in-app purchase.
+    private func getAppStoreReceipt() -> String {
+        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL else {
+            return "no url"
+        }
+        log("appStoreReceiptURL: \(appStoreReceiptURL)")
+        
+        guard FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
+            return "file not exist"
+        }
+        do {
+            log("appStoreReceiptURL path: \(appStoreReceiptURL.path)")
+            let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+            let receiptString = receiptData.base64EncodedString(options: [])
+            log("receipt: \(receiptString)")
+            return receiptString
+        } catch {
+            log("get app store receipt occur error: \(error.localizedDescription)")
+        }
+        return "error"
+    }
+    
+    private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
+        // Check if the transaction passes StoreKit verfication.
         switch result {
         case .unverified:
-            // StoreKit parses the JWS, but it fails verification.
             throw StoreError.failedVerification
         case .verified(let safe):
-            // The result is verified. Return the unwrapped value.
-            print("iap: verified success")
+            // If the transaction is verified, upwrap and return it.
             return safe
+        }
+    }
+    
+    @MainActor
+    private func updatePurchasedTransaction(_ transaction: Transaction) async {
+        if transaction.revocationDate == nil {
+            purchasedTransaction.insert(transaction)
+        } else {
+            purchasedTransaction.remove(transaction)
         }
     }
     
@@ -124,6 +257,12 @@ class Store: ObservableObject {
         return transaction
     }
     
+    @MainActor
+    func uploadServer(for transaction: Transaction) async {
+//        let dic: [String: Any] = ["transactionId": transactionId]
+        stateBlock?(StoreState.verifiedServer, transaction)
+    }
+    
     // 事件完成处理
     func transactionFinish(transaction: String) async {
         if transactionMap[transaction] != nil {
@@ -134,33 +273,37 @@ class Store: ObservableObject {
         }
     }
     
-    @MainActor
-    func uploadServer(for transaction: Transaction) async {
-//        let dic: [String: Any] = ["transactionId": transactionId]
-        stateBlock?(StoreState.verifiedServer, transaction)
-    }
     
-    // 支付监听事件
-    func listenForTransactions() -> Task<Void, Error> {
-        return Task.detached {
-            // Iterate through any transactions that don't come from a direct call to `purchase()`.
-            // 修改update 为 unfinished?
-            for await result in Transaction.updates { // 会导致二次校验？
-                do {
-                    print("iap: updates")
-                    print("result:\(result)")
-                    let transaction = try await self.verifiedAndFinish(result)
-                    print("transaction:\(String(describing: transaction))")
-                } catch {
-                    // StoreKit has a transaction that fails verification. Don't deliver content to the user.
-                    print("Transaction failed verification")
-                }
-            }
+    // MARK: Refund
+    
+    func refund(transaction: Transaction) async -> Bool {
+        guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return false
         }
+        
+        do {
+            log("begin refund request: \(transaction.debugDescription)")
+            
+            let status = try await transaction.beginRefundRequest(in: windowScene)
+            
+            switch status {
+            case .userCancelled:
+                log("user cancel")
+                return false
+            case .success:
+                log("success")
+                return true
+            @unknown default:
+                fatalError()
+            }
+        } catch {
+            log("Occur error: \(error.localizedDescription)")
+        }
+        return false
     }
     
-    // 销毁调用
-    deinit {
-        updateListenerTask?.cancel()
-    }
+}
+
+public extension Data {
+    func toString() -> String { String(decoding: self, as: UTF8.self) }
 }

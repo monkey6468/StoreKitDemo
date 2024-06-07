@@ -16,6 +16,12 @@ import StoreKit
     // 开始进行内购
     func storeKitPay(productId: String, orderID: String) {
         let store = Store.shared
+        // 启动自动监听事件
+        store.stateBlock = { [weak self](state: StoreState, transaction : Transaction?) in
+            guard let transactionT = transaction else { return
+                (self?.payClosure?(state, nil, nil))!}
+            self?.payClosure?(state, String(transactionT.id), String(transactionT.originalID))
+        }
         Task {
             do {
                 if try await store.requestBuyProduct(productId: productId, orderID: orderID) != nil {
@@ -30,27 +36,18 @@ import StoreKit
     }
     
     // 请求退款
-    func storeKitRefun(Id: String) {
-        let store = Store.shared
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            //            if let keyWindow = windowScene.windows.first(where: \.isKeyWindow) {
-            Task {
-                let transId = UInt64(Id)
-                await store.refunRequest(for: transId ?? 0, scene: windowScene)
-            }
-            //            }
-        }
+    func storeKitRefund(Id: String) {
+//        let store = Store.shared
+//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+//            //            if let keyWindow = windowScene.windows.first(where: \.isKeyWindow) {
+//            Task {
+//                let transId = UInt64(Id)
+//                await store.refunRequest(for: transId ?? 0, scene: windowScene)
+//            }
+//            //            }
+//        }
     }
 
-    // 启动自动监听事件
-    func storeKitLaunch() {
-        let store = Store.shared
-        store.stateBlock = { [weak self](state: StoreState, transaction : Transaction?) in
-            guard let transactionT = transaction else { return
-                (self?.payClosure?(state, nil, nil))!}
-            self?.payClosure?(state, String(transactionT.id), String(transactionT.originalID))
-        }
-    }
 
     // 完成事件
     private func storeKitFinish(Id: String) {
