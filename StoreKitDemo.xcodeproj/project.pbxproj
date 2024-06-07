@@ -19,7 +19,7 @@
 		8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BA9C2BE0D8B200FBCEF5 /* ApplePay2Manger.swift */; };
 		8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */; };
 		8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */; };
-		8DC2BAA92BE0D8B200FBCEF5 /* StoreKit2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */; };
+		8DC2BAA92BE0D8B200FBCEF5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC2BAA32BE0D8B200FBCEF5 /* Store.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +43,7 @@
 		8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplePayTool.m; sourceTree = "<group>"; };
 		8DC2BAA12BE0D8B200FBCEF5 /* KKApplePayManner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKApplePayManner.h; sourceTree = "<group>"; };
 		8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKApplePayManner.m; sourceTree = "<group>"; };
-		8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKit2.swift; sourceTree = "<group>"; };
+		8DC2BAA32BE0D8B200FBCEF5 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +111,7 @@
 				8DC2BAA02BE0D8B200FBCEF5 /* ApplePayTool.m */,
 				8DC2BAA12BE0D8B200FBCEF5 /* KKApplePayManner.h */,
 				8DC2BAA22BE0D8B200FBCEF5 /* KKApplePayManner.m */,
-				8DC2BAA32BE0D8B200FBCEF5 /* StoreKit2.swift */,
+				8DC2BAA32BE0D8B200FBCEF5 /* Store.swift */,
 			);
 			path = ApplePay;
 			sourceTree = "<group>";
@@ -192,7 +192,7 @@
 				8D5EC4112BBBA5B1002F4673 /* AppDelegate.m in Sources */,
 				8D9CB7942C106D260082AF77 /* InAppPurchaseService.swift in Sources */,
 				8D5EC4222BBBA5B3002F4673 /* main.m in Sources */,
-				8DC2BAA92BE0D8B200FBCEF5 /* StoreKit2.swift in Sources */,
+				8DC2BAA92BE0D8B200FBCEF5 /* Store.swift in Sources */,
 				8D5EC4142BBBA5B1002F4673 /* SceneDelegate.m in Sources */,
 				8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */,
 				8D9CB7932C106D260082AF77 /* InAppPurchaseError.swift in Sources */,
