@@ -135,13 +135,10 @@ class Store: ObservableObject {
     func purchase(_ product: Product) async throws -> Transaction? {
         log("begin purchase")
 
-        let uuidString = UUID().uuidString // "367E28C7-CF53-438A-98C3-24DFA11706BF"
+        let uuidString = "c001735d-56f6-4a77-a7d8-d9576068b3c0"
         print("------uuid ------: \(uuidString)")
-        let orderID = "12345678"
-        let uuidConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuidString)!)
-        let orderIDConfig = Product.PurchaseOption.custom(key: "orderID", value: orderID)
-
-        let result = try await product.purchase(options: [uuidConfig, orderIDConfig])
+        let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuidString)!)
+        let result = try await product.purchase(options: [orderIDConfig])
         
         switch result {
         case .success(let verification):
