@@ -172,9 +172,10 @@ class Store: ObservableObject {
             log("purchase success, begin verify")
             let transaction = try checkVerified(verification)
             log("check verified success: \(transaction.jsonRepresentation.toString())")
-            let receipt = getAppStoreReceipt()
-            log("receipt: \(receipt)")
-            await updatePurchasedTransaction(transaction)
+            stateBlock?(StoreState.success, transaction)
+//            let receipt = getAppStoreReceipt()
+//            log("receipt: \(receipt)")
+//            await updatePurchasedTransaction(transaction)
             
             // Always finish a transaction
             log("purchased success finished")
@@ -276,15 +277,15 @@ class Store: ObservableObject {
     
     // MARK: Refund
     
-    func refund(transaction: Transaction) async -> Bool {
+    func refunRequest(for transactionId: UInt64) async -> Bool {
         guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene else {
             return false
         }
         
         do {
-            log("begin refund request: \(transaction.debugDescription)")
+            log("begin refund request: \(transactionId)")
             
-            let status = try await transaction.beginRefundRequest(in: windowScene)
+            let status = try await Transaction.beginRefundRequest(for: transactionId, in: windowScene)
             
             switch status {
             case .userCancelled:

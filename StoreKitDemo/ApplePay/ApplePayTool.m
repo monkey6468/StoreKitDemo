@@ -17,7 +17,7 @@
 
 @interface ApplePayTool ()
 
-@property (nonatomic, copy) NSString *productID;   // 商品标识，苹果内购需提供（开发者网站设置时必须为大写）
+@property (nonatomic, copy) NSString *productID; // 商品标识，苹果内购需提供（开发者网站设置时必须为大写）
 @property (nonatomic, copy) NSString *orderNumber;
 
 @property (nonatomic, strong) ApplePayResponse *reponseModel;
@@ -32,9 +32,19 @@
     self.productID = productID;
     self.orderNumber = orderNumber;
     self.payBlock = payBlock;
-    self.reponseModel = [[ApplePayResponse alloc]init];
+    self.reponseModel = [[ApplePayResponse alloc] init];
     
     [self payGoodsWithStoreKit];
+}
+
+- (void)requestRefundWithtransactionId:(NSString *)transactionId {
+    if (@available(iOS 15.0, *)) {
+        NSLog(@"Apple退款方式 V2");
+        ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
+        [manger storeKitRefundWithId:transactionId];
+    } else {
+        NSLog(@"Apple退款方式 V1 不支持");
+    }
 }
 
 - (void)payGoodsWithStoreKit {
@@ -45,10 +55,10 @@
     
     if (@available(iOS 15.0, *)) {
         NSLog(@"Apple购买方式 V2");
-        ApplePay2Manger *manger = [[ApplePay2Manger alloc]init];
+        ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
         [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
         __strong typeof(self) sself = self;
-        manger.payClosure = ^(StoreState status, NSString * _Nullable transactionId, NSString * _Nullable originalID) {
+        manger.payClosure = ^(StoreState status, NSString *_Nullable transactionId, NSString *_Nullable originalID) {
             sself.reponseModel.transactionId = transactionId;
             sself.reponseModel.originalID = originalID;
             [sself returnResultV2WithStatus:status];
@@ -67,7 +77,7 @@
             NSDictionary *payDictT = nil;
             for (NSDictionary *payDict in items) {
                 NSDictionary *dict = payDict[currentKey];
-                if (dict)  {
+                if (dict) {
                     payDictT = payDict;
                     break;
                 }
@@ -85,7 +95,7 @@
 }
 
 // 获取Apple商品标识列表
-- (void)requestGoodsListWithCompletion:(void(^)(SKProduct *product))completion {
+- (void)requestGoodsListWithCompletion:(void (^)(SKProduct *product))completion {
     [[KKApplePayManner sharedInstance] requestProducts:@[ self.productID ]
                                         withCompletion:^(SKProductsRequest *request, SKProductsResponse *response, NSError *error) {
         if (!error) {
@@ -176,15 +186,22 @@
     NSLog(@"Apple V2购买商品状态:%ld, orderID: %@", status, [self getPayId]);
     self.reponseModel.type = ApplePayType_V2;
     self.reponseModel.status = status;
-    if (self.payBlock) {
-        self.payBlock(self.reponseModel);
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.payBlock) {
+            self.payBlock(self.reponseModel);
+        }
+    });
 }
 
 #pragma mark - Getter
 - (NSString *)productID {
-    NSString *tag = _productID.uppercaseString;
-    return tag;
+    NSString *tagStr = @"Diagnosis";
+    if ([_productID containsString:tagStr]) {
+        return _productID;
+    } else {
+        NSString *resultStr = [NSString stringWithFormat:@"%@%@", _productID.uppercaseString, tagStr];
+        return resultStr;
+    }
 }
 
 - (NSString *)getPayId {

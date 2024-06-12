@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, StoreState) {
     StoreState_pay = 108,
     StoreState_pending = 109,
     StoreState_unowned = 110,
+    StoreState_finish = 111,
     // 其它: SKPaymentTransactionState
 };
 typedef NS_ENUM(NSInteger, ApplePayType) {
@@ -52,6 +53,7 @@ typedef void(^ApplePayBlock)(ApplePayResponse *response);
                          orderNumber:(nonnull NSString *)orderNumber
                             payBlock:(ApplePayBlock)payBlock;
 
+- (void)requestRefundWithtransactionId:(NSString *)transactionId;
 @end
 
 NS_ASSUME_NONNULL_END

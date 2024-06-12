@@ -25,7 +25,7 @@ import StoreKit
         Task {
             do {
                 if try await store.requestBuyProduct(productId: productId, orderID: orderID) != nil {
-                    self.payClosure?(.success, nil, nil)
+                    self.payClosure?(.finish, nil, nil)
                 }
             } catch StoreError.failedVerification {
                 self.payClosure?(.verifiedFailed, nil, nil)
@@ -37,15 +37,12 @@ import StoreKit
     
     // 请求退款
     func storeKitRefund(Id: String) {
-//        let store = Store.shared
-//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-//            //            if let keyWindow = windowScene.windows.first(where: \.isKeyWindow) {
-//            Task {
-//                let transId = UInt64(Id)
-//                await store.refunRequest(for: transId ?? 0, scene: windowScene)
-//            }
-//            //            }
-//        }
+        let store = Store.shared
+        Task {
+            let transId = UInt64(Id)
+            let ret = await store.refunRequest(for: transId ?? 0)
+            print("refunRequest:\(ret)")
+        }
     }
 
 

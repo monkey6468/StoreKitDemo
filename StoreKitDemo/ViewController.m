@@ -30,29 +30,21 @@
     [tool requestAppleIAPWithProductID:self.productIDTF.text
                            orderNumber:@"c001735d-56f6-4a77-a7d8-d9576068b3c0"
                               payBlock:^(ApplePayResponse * _Nonnull response) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            StoreState status = response.status;
-            if (response.type == ApplePayType_V1) {
-                NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payDict);
-            } else {
+        StoreState status = response.status;
+        if (response.type == ApplePayType_V1) {
+            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payDict);
+        } else {
+            if (status == StoreState_success) {
                 sself.transactionIDTF.text = response.transactionId;
-                NSLog(@"onActionPurchase v2 :%ld - %@ - %@", status, response.transactionId, response.originalID);
             }
-        });
+            NSLog(@"onActionPurchase v2 :%ld - %@ - %@", status, response.transactionId, response.originalID);
+        }
     }];
 }
 
 - (IBAction)onActionRefund:(UIButton *)sender {
-//    ApplePayTool *tool = [[ApplePayTool alloc]init];
-//    [tool requestAppleIAPWithProductID:self.productIDTF.text
-//                           orderNumber:@"c001735d-56f6-4a77-a7d8-d9576068b3c0"
-//                              payBlock:^(ApplePayResponse * _Nonnull response) {
-//        StoreState status = response.status;
-//        if (response.type == ApplePayType_V1) {
-//            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payDict);
-//        } else {
-//            NSLog(@"onActionPurchase v2 :%ld - %@ - %@", status, response.transactionId, response.originalID);
-//        }
-//    }];
+    ApplePayTool *tool = [[ApplePayTool alloc]init];
+//    self.transactionIDTF.text = @"2000000625375849";
+    [tool requestRefundWithtransactionId:self.transactionIDTF.text];
 }
 @end
