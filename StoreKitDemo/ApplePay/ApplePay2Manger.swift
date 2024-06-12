@@ -14,12 +14,12 @@ import UIKit
     public var payClosure: ((_ status: StoreState, _ response: ApplePayResponseV2?) -> ())?
 
     // 开始进行内购
-    func storeKitPay(productId: String, orderID: String) {
+    func storeKitPay(productId: String, uuid: String) {
         self.storeKitLaunch()
         let store = Store.shared
         Task {
             do {
-                if try await store.requestBuyProduct(productId: productId, orderID: orderID) != nil {
+                if try await store.requestBuyProduct(productId: productId, uuid: uuid) != nil {
                     self.payClosure?(.finish, nil)
                 }
             } catch StoreError.failedVerification {

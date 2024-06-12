@@ -21,7 +21,7 @@
 @interface ApplePayTool ()
 
 @property (nonatomic, copy) NSString *productID; // 商品标识，苹果内购需提供（开发者网站设置时必须为大写）
-@property (nonatomic, copy) NSString *orderNumber;
+@property (nonatomic, copy) NSString *uuid;
 
 @property (nonatomic, strong) ApplePayResponse *reponseModel;
 
@@ -30,10 +30,10 @@
 @implementation ApplePayTool
 
 - (void)requestAppleIAPWithProductID:(NSString *)productID
-                         orderNumber:(nonnull NSString *)orderNumber
+                                uuid:(NSString *)uuid
                             payBlock:(ApplePayBlock)payBlock {
     self.productID = productID;
-    self.orderNumber = orderNumber;
+    self.uuid = uuid;
     self.payBlock = payBlock;
     self.reponseModel = [[ApplePayResponse alloc] init];
     
@@ -65,7 +65,7 @@
     if (@available(iOS 15.0, *)) {
         NSLog(@"Apple购买方式 V2");
         ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
-        [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
+        [manger storeKitPayWithProductId:self.productID uuid:self.uuid];
         __strong typeof(self) sself = self;
         manger.payClosure = ^(StoreState status, ApplePayResponseV2 *_Nullable response) {
             sself.reponseModel.responseV2 = response;
@@ -214,7 +214,7 @@
 
 - (NSString *)getPayId {
     // key: orderNumber
-    NSString *key = self.orderNumber;
+    NSString *key = self.uuid;
     return key;
 }
 @end

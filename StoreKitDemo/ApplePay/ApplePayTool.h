@@ -59,7 +59,7 @@ typedef void(^ApplePayBlock)(ApplePayResponse *response);
 @property (copy, nonatomic) ApplePayBlock payBlock;
 
 - (void)requestAppleIAPWithProductID:(NSString *)productID
-                         orderNumber:(nonnull NSString *)orderNumber
+                                uuid:(NSString *)uuid
                             payBlock:(ApplePayBlock)payBlock;
 
 - (void)requestRefundWithTransactionId:(NSString *)transactionId

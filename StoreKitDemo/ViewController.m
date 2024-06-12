@@ -28,7 +28,7 @@
     ApplePayTool *tool = [[ApplePayTool alloc]init];
     __weak typeof(self) sself = self;
     [tool requestAppleIAPWithProductID:self.productIDTF.text
-                           orderNumber:@"c001735d-56f6-4a77-a7d8-d9576068b3c0"
+                                  uuid:@"c001735d-56f6-4a77-a7d8-d9576068b3c0"
                               payBlock:^(ApplePayResponse * _Nonnull response) {
         StoreState status = response.status;
         if (response.type == ApplePayType_V1) {

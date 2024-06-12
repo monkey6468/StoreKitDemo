@@ -144,14 +144,14 @@ class Store: ObservableObject {
     
     // MARK: Purchase
     // 购买某个产品
-    func requestBuyProduct(productId: String, orderID: String) async throws -> Transaction? {
+    func requestBuyProduct(productId: String, uuid: String) async throws -> Transaction? {
         stateBlock?(StoreState.start, nil)
         do {
             let list: [String] = [productId]
             let storeProducts = try await Product.products(for: Set(list))
             
             if storeProducts.count > 0 {
-                return try await purchase(storeProducts[0], orderID: orderID)
+                return try await purchase(storeProducts[0], uuid: uuid)
             } else {
                 throw StoreError.noProduct // 没有该产品
             }
@@ -160,11 +160,11 @@ class Store: ObservableObject {
         }
     }
 
-    func purchase(_ product: Product, orderID: String) async throws -> Transaction? {
+    func purchase(_ product: Product, uuid: String) async throws -> Transaction? {
         stateBlock?(StoreState.pay, nil)
         log("begin purchase")
 
-        let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: orderID)!)
+        let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuid)!)
         let result = try await product.purchase(options: [orderIDConfig])
         
         switch result {
