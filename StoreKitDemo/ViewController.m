@@ -35,9 +35,9 @@
             NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payDict);
         } else {
             if (status == StoreState_success) {
-                sself.transactionIDTF.text = response.transactionId;
+                sself.transactionIDTF.text = response.responseV2.transactionId;
             }
-            NSLog(@"onActionPurchase v2 :%ld - %@ - %@", status, response.transactionId, response.originalID);
+            NSLog(@"onActionPurchase v2 :%ld - %@", status, response.responseV2.transactionId);
         }
     }];
 }
@@ -45,6 +45,9 @@
 - (IBAction)onActionRefund:(UIButton *)sender {
     ApplePayTool *tool = [[ApplePayTool alloc]init];
 //    self.transactionIDTF.text = @"2000000625375849";
-    [tool requestRefundWithtransactionId:self.transactionIDTF.text];
+    [tool requestRefundWithTransactionId:self.transactionIDTF.text block:^(ApplePayResponse * _Nonnull response) {
+        StoreState status = response.status;
+        NSLog(@"onActionRefund v2 :%ld", status);
+    }];
 }
 @end

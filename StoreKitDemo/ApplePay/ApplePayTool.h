@@ -24,12 +24,22 @@ typedef NS_ENUM(NSInteger, StoreState) {
     StoreState_pending = 109,
     StoreState_unowned = 110,
     StoreState_finish = 111,
+    StoreState_refundSuccess = 200,
+    StoreState_refundFailed = 201,
     // 其它: SKPaymentTransactionState
 };
 typedef NS_ENUM(NSInteger, ApplePayType) {
     ApplePayType_V1,
     ApplePayType_V2,
 };
+
+@interface ApplePayResponseV2 : NSObject
+
+@property (nonatomic, strong) NSString *transactionId;
+@property (nonatomic, strong) NSDate *purchaseDate;
+@property (nonatomic, strong) NSString *inAppOwnershipType;
+
+@end
 
 @interface ApplePayResponse : NSObject
 
@@ -38,8 +48,7 @@ typedef NS_ENUM(NSInteger, ApplePayType) {
 
 // payDict 「[self getPayId]:{receipt，currency，price}」，因为内部有存储，但v1版本自己服务器验证成功后，需要移除 [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDict];
 @property (nonatomic, strong) NSDictionary *payDict;
-@property (nonatomic, strong) NSString *transactionId;
-@property (nonatomic, strong) NSString *originalID;
+@property (nonatomic, strong) ApplePayResponseV2 *responseV2;
 
 @end
 
@@ -53,7 +62,8 @@ typedef void(^ApplePayBlock)(ApplePayResponse *response);
                          orderNumber:(nonnull NSString *)orderNumber
                             payBlock:(ApplePayBlock)payBlock;
 
-- (void)requestRefundWithtransactionId:(NSString *)transactionId;
+- (void)requestRefundWithTransactionId:(NSString *)transactionId
+                                 block:(ApplePayBlock)payBlock;
 @end
 
 NS_ASSUME_NONNULL_END

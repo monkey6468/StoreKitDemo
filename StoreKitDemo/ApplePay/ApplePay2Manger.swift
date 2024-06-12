@@ -5,46 +5,42 @@
 //  Created by autophix on 2024/4/2.
 //
 
-import UIKit
 import StoreKit
+import UIKit
 
 @available(iOS 15.0, *)
 @objcMembers class ApplePay2Manger: NSObject {
     // 系统会验证是否是一个合法的 Transaction，此时系统不再提供 base64 的 receip string 信息，只需要上传 transaction.id 和 transaction.originalID，服务器端根据需要选择合适的 ID 进行验证。
-    public var payClosure:((_ status: StoreState, _ transactionId: String?, _ originalID: String?) -> ())?
+    public var payClosure: ((_ status: StoreState, _ response: ApplePayResponseV2?) -> ())?
 
     // 开始进行内购
     func storeKitPay(productId: String, orderID: String) {
+        self.storeKitLaunch()
         let store = Store.shared
-        // 启动自动监听事件
-        store.stateBlock = { [weak self](state: StoreState, transaction : Transaction?) in
-            guard let transactionT = transaction else { return
-                (self?.payClosure?(state, nil, nil))!}
-            self?.payClosure?(state, String(transactionT.id), String(transactionT.originalID))
-        }
         Task {
             do {
                 if try await store.requestBuyProduct(productId: productId, orderID: orderID) != nil {
-                    self.payClosure?(.finish, nil, nil)
+                    self.payClosure?(.finish, nil)
                 }
             } catch StoreError.failedVerification {
-                self.payClosure?(.verifiedFailed, nil, nil)
+                self.payClosure?(.verifiedFailed, nil)
             } catch StoreError.noProduct {
-                self.payClosure?(.noProduct, nil, nil)
+                self.payClosure?(.noProduct, nil)
             }
         }
     }
-    
+
     // 请求退款
     func storeKitRefund(Id: String) {
+        self.storeKitLaunch()
         let store = Store.shared
         Task {
             let transId = UInt64(Id)
             let ret = await store.refunRequest(for: transId ?? 0)
             print("refunRequest:\(ret)")
+            self.payClosure?(ret ? .refundSuccess : .refundFailed, nil)
         }
     }
-
 
     // 完成事件
     private func storeKitFinish(Id: String) {
@@ -54,4 +50,18 @@ import StoreKit
         }
     }
 
+    // 启动自动监听事件
+    func storeKitLaunch() {
+        let store = Store.shared
+        store.stateBlock = { [weak self] (state: StoreState, transaction: Transaction?) in
+            guard let transactionT = transaction else { return
+                (self?.payClosure?(state, nil))!
+            }
+            var response = ApplePayResponseV2()
+            response.transactionId = String((transaction?.id)!)
+            response.purchaseDate = transaction?.purchaseDate ?? Date()
+            response.inAppOwnershipType = String(transaction?.ownershipType.rawValue ?? "")
+            self?.payClosure?(state, response)
+        }
+    }
 }

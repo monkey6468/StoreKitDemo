@@ -15,6 +15,9 @@
 @implementation ApplePayResponse
 @end
 
+@implementation ApplePayResponseV2
+@end
+
 @interface ApplePayTool ()
 
 @property (nonatomic, copy) NSString *productID; // 商品标识，苹果内购需提供（开发者网站设置时必须为大写）
@@ -37,11 +40,17 @@
     [self payGoodsWithStoreKit];
 }
 
-- (void)requestRefundWithtransactionId:(NSString *)transactionId {
+- (void)requestRefundWithTransactionId:(NSString *)transactionId
+                                 block:(ApplePayBlock)payBlock {
+    self.payBlock = payBlock;
     if (@available(iOS 15.0, *)) {
         NSLog(@"Apple退款方式 V2");
         ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
         [manger storeKitRefundWithId:transactionId];
+        __strong typeof(self) sself = self;
+        manger.payClosure = ^(StoreState status, ApplePayResponseV2 *_Nullable response) {
+            [sself returnResultV2WithStatus:status];
+        };
     } else {
         NSLog(@"Apple退款方式 V1 不支持");
     }
@@ -58,9 +67,8 @@
         ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
         [manger storeKitPayWithProductId:self.productID orderID:self.orderNumber];
         __strong typeof(self) sself = self;
-        manger.payClosure = ^(StoreState status, NSString *_Nullable transactionId, NSString *_Nullable originalID) {
-            sself.reponseModel.transactionId = transactionId;
-            sself.reponseModel.originalID = originalID;
+        manger.payClosure = ^(StoreState status, ApplePayResponseV2 *_Nullable response) {
+            sself.reponseModel.responseV2 = response;
             [sself returnResultV2WithStatus:status];
         };
     } else {
