@@ -37,7 +37,6 @@ import UIKit
         Task {
             let transId = UInt64(Id)
             let ret = await store.refunRequest(for: transId ?? 0)
-            print("refunRequest:\(ret)")
             self.payClosure?(ret ? .refundSuccess : .refundFailed, nil)
         }
     }
@@ -54,10 +53,10 @@ import UIKit
     func storeKitLaunch() {
         let store = Store.shared
         store.stateBlock = { [weak self] (state: StoreState, transaction: Transaction?) in
-            guard let transactionT = transaction else { return
+            guard let _ = transaction else { return
                 (self?.payClosure?(state, nil))!
             }
-            var response = ApplePayResponseV2()
+            let response = ApplePayResponseV2()
             response.transactionId = String((transaction?.id)!)
             response.purchaseDate = transaction?.purchaseDate ?? Date()
             response.inAppOwnershipType = String(transaction?.ownershipType.rawValue ?? "")

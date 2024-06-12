@@ -69,7 +69,7 @@ class Store: ObservableObject {
     }
     
     public func log(_ message: String) {
-        logger.info("\(message, privacy: .public)")
+//        logger.info("\(message, privacy: .public)")
     }
     
     deinit {
