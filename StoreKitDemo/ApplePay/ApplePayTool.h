@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, ApplePayType) {
 @property (nonatomic, assign) StoreState status;
 
 // payDict 「[self getPayId]:{receipt，currency，price}」，因为内部有存储，但v1版本自己服务器验证成功后，需要移除 [[KKApplePayManner sharedInstance] deleteByPaymentVoucher:self.payDict];
-@property (nonatomic, strong) NSDictionary *payDict;
+@property (nonatomic, strong) NSDictionary *payV1Dict;
 @property (nonatomic, strong) ApplePayResponseV2 *responseV2;
 
 @end

@@ -28,11 +28,11 @@
     ApplePayTool *tool = [[ApplePayTool alloc]init];
     __weak typeof(self) sself = self;
     [tool requestAppleIAPWithProductID:self.productIDTF.text
-                                  uuid:@"c001735d-56f6-4a77-a7d8-d9576068b3c0"
+                                  uuid:@"c001735d-56f6-4a77-a7d8-d9576068b3c1"
                               payBlock:^(ApplePayResponse * _Nonnull response) {
         StoreState status = response.status;
         if (response.type == ApplePayType_V1) {
-            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payDict);
+            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payV1Dict);
         } else {
             if (status == StoreState_success) {
                 sself.transactionIDTF.text = response.responseV2.transactionId;
@@ -44,7 +44,6 @@
 
 - (IBAction)onActionRefund:(UIButton *)sender {
     ApplePayTool *tool = [[ApplePayTool alloc]init];
-//    self.transactionIDTF.text = @"2000000625375849";
     [tool requestRefundWithTransactionId:self.transactionIDTF.text block:^(ApplePayResponse * _Nonnull response) {
         StoreState status = response.status;
         NSLog(@"onActionRefund v2 :%ld", status);

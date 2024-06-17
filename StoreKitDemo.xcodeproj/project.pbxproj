@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D4BA70B2C1AD7450047EC45 /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BA7072C1AD7450047EC45 /* NSObject+YYModel.m */; };
+		8D4BA70C2C1AD7450047EC45 /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BA7092C1AD7450047EC45 /* YYClassInfo.m */; };
 		8D5EC4112BBBA5B1002F4673 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4102BBBA5B1002F4673 /* AppDelegate.m */; };
 		8D5EC4142BBBA5B1002F4673 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4132BBBA5B1002F4673 /* SceneDelegate.m */; };
 		8D5EC4172BBBA5B1002F4673 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5EC4162BBBA5B1002F4673 /* ViewController.m */; };
@@ -21,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D4BA7062C1AD7450047EC45 /* NSObject+YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YYModel.h"; sourceTree = "<group>"; };
+		8D4BA7072C1AD7450047EC45 /* NSObject+YYModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+YYModel.m"; sourceTree = "<group>"; };
+		8D4BA7082C1AD7450047EC45 /* YYClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYClassInfo.h; sourceTree = "<group>"; };
+		8D4BA7092C1AD7450047EC45 /* YYClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYClassInfo.m; sourceTree = "<group>"; };
 		8D5EC40C2BBBA5B1002F4673 /* StoreKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5EC40F2BBBA5B1002F4673 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8D5EC4102BBBA5B1002F4673 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -53,9 +59,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D4BA7052C1AD7330047EC45 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BA70A2C1AD7450047EC45 /* YYModel */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		8D4BA70A2C1AD7450047EC45 /* YYModel */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BA7062C1AD7450047EC45 /* NSObject+YYModel.h */,
+				8D4BA7072C1AD7450047EC45 /* NSObject+YYModel.m */,
+				8D4BA7082C1AD7450047EC45 /* YYClassInfo.h */,
+				8D4BA7092C1AD7450047EC45 /* YYClassInfo.m */,
+			);
+			path = YYModel;
+			sourceTree = "<group>";
+		};
 		8D5EC4032BBBA5B1002F4673 = {
 			isa = PBXGroup;
 			children = (
+				8D4BA7052C1AD7330047EC45 /* Lib */,
 				8D5EC40E2BBBA5B1002F4673 /* StoreKitDemo */,
 				8D5EC40D2BBBA5B1002F4673 /* Products */,
 			);
@@ -173,6 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D4BA70B2C1AD7450047EC45 /* NSObject+YYModel.m in Sources */,
 				8DC2BAA82BE0D8B200FBCEF5 /* KKApplePayManner.m in Sources */,
 				8D5EC4172BBBA5B1002F4673 /* ViewController.m in Sources */,
 				8D5EC4112BBBA5B1002F4673 /* AppDelegate.m in Sources */,
@@ -180,6 +207,7 @@
 				8DC2BAA92BE0D8B200FBCEF5 /* Store.swift in Sources */,
 				8D5EC4142BBBA5B1002F4673 /* SceneDelegate.m in Sources */,
 				8DC2BAA72BE0D8B200FBCEF5 /* ApplePayTool.m in Sources */,
+				8D4BA70C2C1AD7450047EC45 /* YYClassInfo.m in Sources */,
 				8DC2BAA52BE0D8B200FBCEF5 /* ApplePay2Manger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
