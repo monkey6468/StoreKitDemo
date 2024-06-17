@@ -8,6 +8,8 @@
 
 #import "ApplePayTool.h"
 #import "KKApplePayManner.h"
+#import "NSObject+YYModel.h"
+
 #import "StoreKitDemo-Swift.h"
 
 #define WeakSelf __weak typeof(self) weakSelf = self;
@@ -15,7 +17,7 @@
 @implementation ApplePayResponse
 @end
 
-@implementation ApplePayResponseV2
+@implementation PayResponse
 @end
 
 @interface ApplePayTool ()
@@ -30,7 +32,7 @@
 @implementation ApplePayTool
 
 - (void)requestAppleIAPWithProductID:(NSString *)productID
-                                uuid:(NSString *)uuid
+                                uuid:(nonnull NSString *)uuid
                             payBlock:(ApplePayBlock)payBlock {
     self.productID = productID;
     self.uuid = uuid;
@@ -48,7 +50,7 @@
         ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
         [manger storeKitRefundWithId:transactionId];
         __strong typeof(self) sself = self;
-        manger.payClosure = ^(StoreState status, ApplePayResponseV2 *_Nullable response) {
+        manger.payClosure = ^(StoreState status, PayResponse *_Nullable response) {
             [sself returnResultV2WithStatus:status];
         };
     } else {
@@ -62,42 +64,54 @@
         return;
     }
     
-//    if (@available(iOS 15.0, *)) {
-//        NSLog(@"Apple购买方式 V2");
-//        ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
-//        [manger storeKitPayWithProductId:self.productID uuid:self.uuid];
-//        __strong typeof(self) sself = self;
-//        manger.payClosure = ^(StoreState status, ApplePayResponseV2 *_Nullable response) {
-//            sself.reponseModel.responseV2 = response;
-//            [sself returnResultV2WithStatus:status];
-//        };
-//    } else {
-        NSLog(@"Apple购买方式 V1");
-        [self payGoodsWithStoreKit1];
-//    }
+    [self checkLocalPayRecord:^(PayResponse *response) {
+        if (response) {
+            self.reponseModel.response = response;
+            if (@available(iOS 15.0, *)) {
+                NSLog(@"Apple购买方式 V2");
+                [self returnResultV2WithStatus:StoreState_success];
+            } else {
+                NSLog(@"Apple购买方式 V1");
+                [self returnResultV1WithStatus:StoreState_success];
+            }
+        } else {
+            if (@available(iOS 15.0, *)) {
+                NSLog(@"Apple购买方式 V2");
+                ApplePay2Manger *manger = [[ApplePay2Manger alloc] init];
+                [manger storeKitPayWithProductId:self.productID uuid:self.uuid];
+                __strong typeof(self) sself = self;
+                manger.payClosure = ^(StoreState status, PayResponse *_Nullable response) {
+                    sself.reponseModel.response = response;
+                    if (status == StoreState_success) {
+                        response.uuid = sself.uuid;
+                        NSMutableDictionary *payDict = response.yy_modelToJSONObject;
+                        [[KKApplePayManner sharedInstance] savePaymentVoucher:payDict];
+                    }
+                    [sself returnResultV2WithStatus:status];
+                };
+            } else {
+                NSLog(@"Apple购买方式 V1");
+                [self payGoodsWithAppleV1];
+            }
+        }
+    }];
 }
 
-- (void)payGoodsWithStoreKit1 {
+- (void)checkLocalPayRecord:(void (^)(PayResponse *response))completed {
     // 验证本地是否存在
     [[KKApplePayManner sharedInstance] checkInternalPurchasePayment:^(NSArray *items, NSError *error) {
         if (items.count) {
-            NSString *currentKey = [self getPayId];
-            NSDictionary *payDictT = nil;
-            for (NSDictionary *payDict in items) {
-                NSDictionary *dict = payDict[currentKey];
-                if (dict) {
-                    payDictT = payDict;
+            NSArray *results = [NSArray yy_modelArrayWithClass:PayResponse.class json:items];
+            PayResponse *modelT = nil;
+            for (PayResponse *model in results) {
+                if ([model.uuid isEqualToString:self.uuid]) {
+                    modelT = model;
                     break;
                 }
             }
-            if (payDictT) {
-                self.reponseModel.payV1Dict = payDictT;
-                [self returnResultV1WithStatus:StoreState_success];
-            } else {
-                [self payGoodsWithApple];
-            }
+            completed(modelT);
         } else {
-            [self payGoodsWithApple];
+            completed(nil);
         }
     }];
 }
@@ -119,7 +133,7 @@
     }];
 }
 
-- (void)payGoodsWithApple {
+- (void)payGoodsWithAppleV1 {
     [self returnResultV1WithStatus:StoreState_start];
     WeakSelf
     [self requestGoodsListWithCompletion:^(SKProduct *product) {
@@ -150,23 +164,24 @@
                 NSString *receipt = [KKApplePayManner sharedInstance].appStoreReceiptbase64EncodedString ?: @"";
                 NSString *transactionIdentifier = transaction.transactionIdentifier ?: @"";
                 NSString *productIdentifier = transaction.payment.productIdentifier;
-                NSLog(@"v1支付：%@ - %@", transactionIdentifier, productIdentifier);
-
+                NSLog(@"Apple v1支付：%@ - %@", transactionIdentifier, productIdentifier);
+                
                 if (receipt.length) {
-                    NSMutableDictionary *dictInfo = [NSMutableDictionary dictionary];
-                    dictInfo[@"receipt"] = receipt;
-                    dictInfo[@"currency"] = currencyCode;
-                    dictInfo[@"price"] = [NSString stringWithFormat:@"%0.2lf", product.price.floatValue];
+                    NSString *price = [NSString stringWithFormat:@"%0.2lf", product.price.floatValue];
                     
-                    NSString *key = [weakSelf getPayId];
-                    NSMutableDictionary *payDict = [NSMutableDictionary dictionary];
-                    payDict[key] = dictInfo;
+                    PayResponse *response = [[PayResponse alloc]init];
+                    response.uuid = weakSelf.uuid;
+                    response.receipt = receipt;
+                    response.currency = currencyCode;
+                    response.price = price;
+
+                    NSMutableDictionary *payDict = response.yy_modelToJSONObject;
                     [[KKApplePayManner sharedInstance] savePaymentVoucher:payDict];
                     
-                    weakSelf.reponseModel.payV1Dict = payDict;
+                    weakSelf.reponseModel.response = response;
                     [weakSelf returnResultV1WithStatus:StoreState_success];
                 } else {
-                    NSLog(@"支付成功有异常⚠️⚠️⚠️：%@", transaction);
+                    NSLog(@"支付成功有异常⚠️⚠️⚠️：%@", transaction.yy_modelToJSONString);
                     [weakSelf returnResultV1WithStatus:StoreState_unowned];
                 }
             }];
@@ -177,23 +192,30 @@
 }
 
 - (void)returnResultV1WithStatus:(StoreState)status {
-    NSLog(@"Apple V1购买商品状态:%ld, uuid: %@", status, [self getPayId]);
+    NSLog(@"Apple V1购买商品状态:%ld, uuid: %@", status, self.uuid);
     self.reponseModel.type = ApplePayType_V1;
     self.reponseModel.status = status;
-    if (self.payBlock) {
-        self.payBlock(self.reponseModel);
-    }
+    [self returnResult];
 }
 
 - (void)returnResultV2WithStatus:(StoreState)status {
-    NSLog(@"Apple V2购买商品状态:%ld, uuid: %@", status, [self getPayId]);
+    NSLog(@"Apple V2购买商品状态:%ld, uuid: %@", status, self.uuid);
     self.reponseModel.type = ApplePayType_V2;
     self.reponseModel.status = status;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.payBlock) {
-            self.payBlock(self.reponseModel);
-        }
+        [self returnResult];
     });
+}
+
+- (void)returnResult {
+#ifdef AUTOPHIX_DEV
+    if (self.reponseModel.status == StoreState_noProduct) {
+        [SVProgressHUD showInfoWithStatus:@"该商品Apple后台没有上架,请联系开发人员!"];
+    }
+#endif
+    if (self.payBlock) {
+        self.payBlock(self.reponseModel);
+    }
 }
 
 #pragma mark - Getter
@@ -207,9 +229,4 @@
     }
 }
 
-- (NSString *)getPayId {
-    // key: orderNumber
-    NSString *key = self.uuid;
-    return key;
-}
 @end

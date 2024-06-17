@@ -11,7 +11,7 @@ import UIKit
 @available(iOS 15.0, *)
 @objcMembers class ApplePay2Manger: NSObject {
     // 系统会验证是否是一个合法的 Transaction，此时系统不再提供 base64 的 receip string 信息，只需要上传 transaction.id 和 transaction.originalID，服务器端根据需要选择合适的 ID 进行验证。
-    public var payClosure: ((_ status: StoreState, _ response: ApplePayResponseV2?) -> ())?
+    public var payClosure: ((_ status: StoreState, _ response: PayResponse?) -> ())?
 
     // 开始进行内购
     func storeKitPay(productId: String, uuid: String) {
@@ -20,7 +20,7 @@ import UIKit
         Task {
             do {
                 if try await store.requestBuyProduct(productId: productId, uuid: uuid) != nil {
-                    self.payClosure?(.finish, nil)
+//                    self.payClosure?(.finish, nil)
                 }
             } catch StoreError.failedVerification {
                 self.payClosure?(.verifiedFailed, nil)
@@ -56,10 +56,12 @@ import UIKit
             guard let _ = transaction else { return
                 (self?.payClosure?(state, nil))!
             }
-            let response = ApplePayResponseV2()
+            let response = PayResponse()
             response.transactionId = String((transaction?.id)!)
             response.purchaseDate = transaction?.purchaseDate ?? Date()
             response.inAppOwnershipType = String(transaction?.ownershipType.rawValue ?? "")
+            response.currency = String((transaction?.currencyCode)!)
+            response.price = String((transaction?.price?.description)!)
             self?.payClosure?(state, response)
         }
     }

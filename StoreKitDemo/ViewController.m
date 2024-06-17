@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "NSObject+YYModel.h"
 
 #import "ApplePayTool.h"
 
@@ -32,12 +33,12 @@
                               payBlock:^(ApplePayResponse * _Nonnull response) {
         StoreState status = response.status;
         if (response.type == ApplePayType_V1) {
-            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.payV1Dict);
+            NSLog(@"onActionPurchase v1 :%ld - %@", status, response.response.yy_modelToJSONString);
         } else {
             if (status == StoreState_success) {
-                sself.transactionIDTF.text = response.responseV2.transactionId;
+                sself.transactionIDTF.text = response.response.transactionId;
             }
-            NSLog(@"onActionPurchase v2 :%ld - %@", status, response.responseV2.transactionId);
+            NSLog(@"onActionPurchase v2 :%ld - %@", status, response.response.yy_modelToJSONString);
         }
     }];
 }

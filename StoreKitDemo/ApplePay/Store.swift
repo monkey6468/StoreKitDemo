@@ -163,10 +163,15 @@ class Store: ObservableObject {
     func purchase(_ product: Product, uuid: String) async throws -> Transaction? {
         stateBlock?(StoreState.pay, nil)
         log("begin purchase")
-
-        let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuid)!)
-        let result = try await product.purchase(options: [orderIDConfig])
         
+        var result : Product.PurchaseResult
+        if uuid.count == 0 {
+            result = try await product.purchase()
+        } else {
+            let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuid)!)
+            result = try await product.purchase(options: [orderIDConfig])
+        }
+                
         switch result {
         case .success(let verification):
             log("purchase success, begin verify")
