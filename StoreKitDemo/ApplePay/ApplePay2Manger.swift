@@ -26,6 +26,8 @@ import UIKit
                 self.payClosure?(.verifiedFailed, nil)
             } catch StoreError.noProduct {
                 self.payClosure?(.noProduct, nil)
+            } catch StoreError.noLogin {
+                self.payClosure?(.noLogin, nil)
             }
         }
     }
@@ -54,7 +56,7 @@ import UIKit
         let store = Store.shared
         store.stateBlock = { [weak self] (state: StoreState, transaction: Transaction?) in
             guard let _ = transaction else { return
-                (self?.payClosure?(state, nil))!
+                self?.payClosure?(state, nil) ?? ()
             }
             let response = PayResponse()
             response.transactionId = String((transaction?.id)!)

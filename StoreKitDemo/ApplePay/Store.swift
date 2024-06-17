@@ -12,6 +12,7 @@ import StoreKit
 public enum StoreError: Error {
     case failedVerification
     case noProduct
+    case noLogin
 }
 
 @available(iOS 15.0, *)
@@ -156,7 +157,7 @@ class Store: ObservableObject {
                 throw StoreError.noProduct // 没有该产品
             }
         } catch {
-            throw StoreError.noProduct // 没有该产品
+            throw StoreError.noLogin // 没有登录
         }
     }
 
