@@ -22,11 +22,11 @@ typedef NS_ENUM(NSInteger, StoreState) {
     StoreState_start = 107,
     StoreState_pay = 108,
     StoreState_pending = 109,
-    StoreState_noLogin = 110, // 没有登录
-    StoreState_unowned = 111,
+    StoreState_unowned = 110,
     //    StoreState_finish = 112,
     StoreState_refundSuccess = 200,
     StoreState_refundFailed = 201,
+    StoreState_appleServerError = 300,
     // 其它: SKPaymentTransactionState
 };
 typedef NS_ENUM(NSInteger, ApplePayType) {

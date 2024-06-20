@@ -26,8 +26,8 @@ import UIKit
                 self.payClosure?(.verifiedFailed, nil)
             } catch StoreError.noProduct {
                 self.payClosure?(.noProduct, nil)
-            } catch StoreError.noLogin {
-                self.payClosure?(.noLogin, nil)
+            } catch StoreError.appleServerError {
+                self.payClosure?(.appleServerError, nil)
             }
         }
     }
