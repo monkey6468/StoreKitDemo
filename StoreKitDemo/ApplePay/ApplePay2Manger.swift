@@ -55,15 +55,15 @@ import UIKit
     func storeKitLaunch() {
         let store = Store.shared
         store.stateBlock = { [weak self] (state: StoreState, transaction: Transaction?) in
-            guard let _ = transaction else { return
-                self?.payClosure?(state, nil) ?? ()
+            guard let _ = transaction else {
+                return self?.payClosure?(state, nil) ?? ()
             }
             let response = PayResponse()
-            response.transactionId = String((transaction?.id)!)
+            response.transactionId = String((transaction?.id) ?? 0)
             response.purchaseDate = transaction?.purchaseDate ?? Date()
             response.inAppOwnershipType = String(transaction?.ownershipType.rawValue ?? "")
-            response.currency = String((transaction?.currencyCode)!)
-            response.price = String((transaction?.price?.description)!)
+            response.currency = String((transaction?.currencyCode) ?? "")
+            response.price = String((transaction?.price?.description) ?? "")
             self?.payClosure?(state, response)
         }
     }

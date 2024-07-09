@@ -18,7 +18,7 @@ public enum StoreError: Error {
 @available(iOS 15.0, *)
 class Store: ObservableObject {
 
-    public var stateBlock:((_ state: StoreState, _ transaction: Transaction?)->(Void))! // 状态回调
+    public var stateBlock:((_ state: StoreState, _ transaction: Transaction?)->(Void))? // 状态回调
     
     @Published private(set) var consumableProducts: [Product]
     
@@ -156,8 +156,10 @@ class Store: ObservableObject {
             } else {
                 throw StoreError.noProduct // 没有该产品
             }
-        } catch {
-            logger.error("Failed product request from the App Store server: \(error)")
+        } catch (StoreError.noProduct) {
+            throw StoreError.noProduct
+        }  catch {
+            log("Failed product request from the App Store server: \(error)")
             throw StoreError.appleServerError
         }
     }
@@ -170,7 +172,7 @@ class Store: ObservableObject {
         if uuid.count == 0 {
             result = try await product.purchase()
         } else {
-            let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuid)!)
+            let orderIDConfig = Product.PurchaseOption.appAccountToken(UUID(uuidString: uuid) ?? UUID.init())
             result = try await product.purchase(options: [orderIDConfig])
         }
                 
